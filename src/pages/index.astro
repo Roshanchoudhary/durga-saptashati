@@ -6,43 +6,65 @@ const beforeReading = await getCollection('before-reading');
 const chapters = await getCollection('chapters');
 const afterReading = await getCollection('after-reading');
 const articles = await getCollection('articles');
+
+// Get total chapters count
+const totalChapters = chapters.length;
 ---
 
 <BaseLayout title="दुर्गा सप्तशती">
-  <!-- Hero -->
+  <!-- ===== HERO SECTION ===== -->
   <section class="hero">
     <div class="container">
       <div class="hero-content">
-        <h1><span>दुर्गा</span> सप्तशती</h1>
-        <p>श्री दुर्गा सप्तशती का संपूर्ण पाठ, अर्थ और विधि सहित</p>
+        <div class="hero-badge">📖 श्री दुर्गा सप्तशती</div>
+        <h1>
+          <span>दुर्गा</span> सप्तशती
+        </h1>
+        <p>
+          700 श्लोक · 13 अध्याय · देवी दुर्गा की महिमा
+        </p>
+        <p class="hero-sub">
+          संपूर्ण पाठ, अर्थ और विधि सहित
+        </p>
         <div class="hero-actions">
-          <a href="/chapters/chapter-1" class="btn btn-primary">📖 पाठ शुरू करें</a>
-          <a href="/about" class="btn btn-secondary">और जानें</a>
+          <a href="/chapters/chapter-1" class="btn btn-primary">
+            📖 पाठ शुरू करें
+          </a>
+          <a href="/about" class="btn btn-secondary">
+            ℹ️ और जानें
+          </a>
+        </div>
+        <div class="hero-stats">
+          <span>📚 {totalChapters} अध्याय</span>
+          <span>📝 700 श्लोक</span>
+          <span>🙏 देवी दुर्गा</span>
         </div>
       </div>
     </div>
   </section>
   
-  <!-- Continue Reading -->
+  <!-- ===== CONTINUE READING ===== -->
   <section class="section section-alt" id="continueSection">
     <div class="container">
       <div class="section-header">
         <h2>⏳ जारी रखें</h2>
+        <p>आपकी पिछली पढ़ाई</p>
       </div>
       <div id="continueContent" class="grid-cards">
-        <!-- Dynamic content will be loaded by JavaScript -->
+        <!-- Dynamic content loaded by JavaScript -->
       </div>
     </div>
   </section>
   
-  <!-- Before Reading -->
+  <!-- ===== BEFORE READING ===== -->
   <section class="section">
     <div class="container">
       <div class="section-header">
         <h2>📖 पढ़ने से पहले</h2>
+        <p>पाठ से पहले जानने योग्य बातें</p>
       </div>
       <div class="grid-cards">
-        {beforeReading.map(item => (
+        {beforeReading.sort((a,b) => (a.data.order || 0) - (b.data.order || 0)).map(item => (
           <a href={`/before-reading/${item.slug}`} class="card">
             <span class="card-badge">पढ़ने से पहले</span>
             <h3>{item.data.title}</h3>
@@ -54,14 +76,15 @@ const articles = await getCollection('articles');
     </div>
   </section>
   
-  <!-- Chapters -->
+  <!-- ===== 13 CHAPTERS ===== -->
   <section class="section section-alt">
     <div class="container">
       <div class="section-header">
         <h2>🕉️ 13 अध्याय</h2>
+        <p>दुर्गा सप्तशती के सभी अध्याय</p>
       </div>
       <div class="grid-cards">
-        {chapters.sort((a,b) => a.data.order - b.data.order).map(item => (
+        {chapters.sort((a,b) => (a.data.order || 0) - (b.data.order || 0)).map(item => (
           <a href={`/chapters/${item.slug}`} class="card">
             <span class="card-badge">अध्याय {item.data.order}</span>
             <h3>{item.data.title}</h3>
@@ -73,14 +96,15 @@ const articles = await getCollection('articles');
     </div>
   </section>
   
-  <!-- After Reading -->
+  <!-- ===== AFTER READING ===== -->
   <section class="section">
     <div class="container">
       <div class="section-header">
         <h2>🙏 पढ़ने के बाद</h2>
+        <p>पाठ के बाद की विधियाँ और स्तोत्र</p>
       </div>
       <div class="grid-cards">
-        {afterReading.map(item => (
+        {afterReading.sort((a,b) => (a.data.order || 0) - (b.data.order || 0)).map(item => (
           <a href={`/after-reading/${item.slug}`} class="card">
             <span class="card-badge">पढ़ने के बाद</span>
             <h3>{item.data.title}</h3>
@@ -92,14 +116,15 @@ const articles = await getCollection('articles');
     </div>
   </section>
   
-  <!-- Articles -->
+  <!-- ===== ARTICLES ===== -->
   <section class="section section-alt">
     <div class="container">
       <div class="section-header">
         <h2>📝 लेख</h2>
+        <p>दुर्गा सप्तशती से जुड़े लेख</p>
       </div>
       <div class="grid-cards">
-        {articles.map(item => (
+        {articles.sort((a,b) => (a.data.order || 0) - (b.data.order || 0)).map(item => (
           <a href={`/articles/${item.slug}`} class="card">
             <span class="card-badge">लेख</span>
             <h3>{item.data.title}</h3>
@@ -112,36 +137,110 @@ const articles = await getCollection('articles');
   </section>
 </BaseLayout>
 
+<style is:global>
+  .hero-badge {
+    display: inline-block;
+    padding: var(--space-1) var(--space-4);
+    background: rgba(192, 57, 43, 0.08);
+    color: var(--accent-orange);
+    border-radius: var(--radius-full);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-wider);
+    margin-bottom: var(--space-4);
+  }
+  
+  .hero-sub {
+    font-size: var(--font-size-medium) !important;
+    color: var(--text-muted) !important;
+    margin-top: -var(--space-2) !important;
+    margin-bottom: var(--space-6) !important;
+  }
+  
+  .hero-stats {
+    display: flex;
+    gap: var(--space-6);
+    justify-content: center;
+    margin-top: var(--space-8);
+    font-size: var(--font-size-small);
+    color: var(--text-secondary);
+  }
+  
+  .hero-stats span {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  
+  @media (max-width: 480px) {
+    .hero-stats {
+      flex-direction: column;
+      gap: var(--space-2);
+      align-items: center;
+    }
+    .hero-badge {
+      font-size: 0.6rem;
+    }
+  }
+</style>
+
 <script is:inline>
-  // Continue reading - load last read
+  // ===== CONTINUE READING =====
   document.addEventListener('DOMContentLoaded', function() {
     const container = document.getElementById('continueContent');
     if (!container) return;
     
     try {
+      // Get bookmarks (reading history)
       const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
       
       if (bookmarks.length > 0) {
+        // Get the last read item
         const last = bookmarks[bookmarks.length - 1];
+        const title = last.replace(/^\/+/, '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        
+        // Get reading progress for this item
+        const progressData = JSON.parse(localStorage.getItem('readingProgress') || '{}');
+        const progress = progressData[last] || 0;
+        
         container.innerHTML = `
-          <div class="card" style="grid-column: 1 / -1;">
-            <h3>पिछली बार पढ़ा</h3>
-            <p style="margin: var(--spacing-2) 0;">${last.replace(/^\/+/, '')}</p>
-            <a href="${last}" class="btn btn-primary">जारी रखें →</a>
+          <div class="card" style="grid-column: 1 / -1; border-color: var(--accent-orange);">
+            <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
+              <div>
+                <span class="card-badge" style="background: rgba(192, 57, 43, 0.1); color: var(--accent-orange);">⏳ जारी रखें</span>
+                <h3 style="margin-bottom: var(--space-2);">${title}</h3>
+                <p style="color: var(--text-muted); font-size: var(--font-size-small);">
+                  पढ़ाई: ${progress}%
+                </p>
+              </div>
+              <a href="${last}" class="btn btn-primary" style="flex-shrink: 0;">
+                📖 जारी रखें →
+              </a>
+            </div>
+            ${progress > 0 ? `
+              <div style="margin-top: var(--space-4);">
+                <div style="height: 4px; background: var(--border-light); border-radius: var(--radius-full); overflow: hidden;">
+                  <div style="height: 100%; width: ${progress}%; background: var(--accent-orange); border-radius: var(--radius-full); transition: width var(--transition-base);"></div>
+                </div>
+              </div>
+            ` : ''}
           </div>
         `;
       } else {
         container.innerHTML = `
-          <div style="grid-column: 1 / -1; text-align: center; color: var(--color-gray-500); padding: var(--spacing-8);">
-            कोई पढ़ाई नहीं मिली। पाठ शुरू करें!
+          <div style="grid-column: 1 / -1; text-align: center; padding: var(--space-8); color: var(--text-muted);">
+            <p style="font-size: var(--font-size-large); margin-bottom: var(--space-2);">📖</p>
+            <p>कोई पढ़ाई नहीं मिली।</p>
+            <p style="font-size: var(--font-size-small);">पाठ शुरू करें और यहाँ जारी रखें!</p>
           </div>
         `;
       }
     } catch (error) {
       console.log('Continue reading error:', error);
       container.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; color: var(--color-gray-500); padding: var(--spacing-8);">
-          पढ़ाई शुरू करें!
+        <div style="grid-column: 1 / -1; text-align: center; padding: var(--space-8); color: var(--text-muted);">
+          <p>📖 पाठ शुरू करें!</p>
         </div>
       `;
     }
