@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import ReaderLayout from '../../layouts/ReaderLayout.astro';
+
+export async function getStaticPaths() {
+  const sections = ['before-reading', 'chapters', 'after-reading', 'articles'];
+  const allItems = [];
+  
+  for (const section of sections) {
+    const items = await getCollection(section);
+    allItems.push(...items.map(item => ({ ...item, collection: section })));
+  }
+  
+  return allItems.map(item => ({
+    params: { 
+      section: item.collection,
+      slug: item.slug 
+    },
+    props: { 
+      item,
+      allItems 
+    }
+  }));
+}
+
+const { item, allItems } = Astro.props;
+const { data, Content, collection } = item;
+
+// Find prev/next
+const sectionItems = allItems.filter(i => i.collection === collection);
+const sorted = sectionItems.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+const index = sorted.findIndex(i => i.slug === item.slug);
+const prev = index > 0 ? sorted[index - 1] : null;
+const next = index < sorted.length - 1 ? sorted[index + 1] : null;
+---
+
+<ReaderLayout 
+  title={data.title}
+  description={data.description}
+  section={collection}
+  navItems={allItems}
+>
+  <Content />
+  
+  <div slot="nav" class="reader-nav">
+    {prev && (
+      <a href={`/${collection}/${prev.slug}`} class="reader-nav-btn prev">
+        ← {prev.data.title}
+      </a>
+    )}
+    {next && (
+      <a href={`/${collection}/${next.slug}`} class="reader-nav-btn next">
+        {next.data.title} →
+      </a>
+    )}
+  </div>
+</ReaderLayout>
