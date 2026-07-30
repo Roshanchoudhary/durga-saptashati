@@ -4,17 +4,16 @@
   "type": "module",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && npm run search",
+    "build": "astro build",
     "preview": "astro preview",
-    "search": "npx pagefind --source dist",
     "astro": "astro"
   },
   "dependencies": {
     "astro": "^4.0.0"
   },
   "devDependencies": {
-    "@astrojs/sitemap": "^3.0.0",
     "@astrojs/mdx": "^2.0.0",
+    "@astrojs/sitemap": "^3.0.0",
     "pagefind": "^1.0.0",
     "sass": "^1.69.0",
     "typescript": "^5.0.0"
