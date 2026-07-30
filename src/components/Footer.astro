@@ -1,0 +1,52 @@
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-section">
+        <h3>दुर्गा सप्तशती</h3>
+        <p>श्री दुर्गा सप्तशती का संपूर्ण पाठ, अर्थ और विधि सहित</p>
+      </div>
+      
+      <div class="footer-section">
+        <h4>त्वरित लिंक</h4>
+        <ul>
+          <li><a href="/before-reading">पढ़ने से पहले</a></li>
+          <li><a href="/chapters">13 अध्याय</a></li>
+          <li><a href="/after-reading">पढ़ने के बाद</a></li>
+          <li><a href="/articles">लेख</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>अन्य</h4>
+        <ul>
+          <li><a href="/about">परिचय</a></li>
+          <li><a href="/privacy">गोपनीयता</a></li>
+          <li><a href="/terms">नियम</a></li>
+        </ul>
+      </div>
+      
+      <div class="footer-section">
+        <h4>डाउनलोड</h4>
+        <ul>
+          <li><a href="#" id="installPWA">📱 App Install करें</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p>© {new Date().getFullYear()} दुर्गा सप्तशती. सर्वाधिकार सुरक्षित</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // PWA Install
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    document.getElementById('installPWA')?.addEventListener('click', () => {
+      deferredPrompt.prompt();
+    });
+  });
+</script>
