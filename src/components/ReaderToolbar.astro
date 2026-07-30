@@ -1,0 +1,83 @@
+<div class="reader-toolbar" id="readerToolbar">
+  <div class="reader-toolbar-inner container">
+    <button class="toolbar-btn" id="decreaseFont" aria-label="छोटा फ़ॉन्ट">
+      A<sup>-</sup>
+    </button>
+    
+    <button class="toolbar-btn" id="increaseFont" aria-label="बड़ा फ़ॉन्ट">
+      A<sup>+</sup>
+    </button>
+    
+    <button class="toolbar-btn" id="bookmarkBtn" aria-label="बुकमार्क">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"/>
+      </svg>
+      <span>बुकमार्क</span>
+    </button>
+    
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    
+    <span class="progress-text" id="progressText">0%</span>
+  </div>
+</div>
+
+<script>
+  // Font size controls
+  let fontSize = 16;
+  
+  document.getElementById('decreaseFont')?.addEventListener('click', () => {
+    if (fontSize > 12) {
+      fontSize -= 2;
+      document.documentElement.style.fontSize = fontSize + 'px';
+      localStorage.setItem('fontSize', fontSize);
+    }
+  });
+  
+  document.getElementById('increaseFont')?.addEventListener('click', () => {
+    if (fontSize < 24) {
+      fontSize += 2;
+      document.documentElement.style.fontSize = fontSize + 'px';
+      localStorage.setItem('fontSize', fontSize);
+    }
+  });
+  
+  // Load saved font size
+  const savedSize = localStorage.getItem('fontSize');
+  if (savedSize) {
+    fontSize = parseInt(savedSize);
+    document.documentElement.style.fontSize = fontSize + 'px';
+  }
+  
+  // Reading progress
+  document.addEventListener('scroll', () => {
+    const scrollTop = window.scrollY;
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
+    
+    document.getElementById('progressFill')?.style.setProperty('width', progress + '%');
+    document.getElementById('progressText')?.textContent = progress + '%';
+  });
+  
+  // Bookmark
+  const bookmarkBtn = document.getElementById('bookmarkBtn');
+  const currentSlug = window.location.pathname;
+  let bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+  
+  if (bookmarks.includes(currentSlug)) {
+    bookmarkBtn?.classList.add('active');
+  }
+  
+  bookmarkBtn?.addEventListener('click', () => {
+    const index = bookmarks.indexOf(currentSlug);
+    if (index > -1) {
+      bookmarks.splice(index, 1);
+      bookmarkBtn.classList.remove('active');
+    } else {
+      bookmarks.push(currentSlug);
+      bookmarkBtn.classList.add('active');
+    }
+    localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+  });
+</script>
