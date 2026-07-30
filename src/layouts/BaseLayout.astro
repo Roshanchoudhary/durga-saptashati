@@ -14,8 +14,9 @@ const { title, description, keywords, ogImage, canonical } = Astro.props;
 
 const siteTitle = 'दुर्गा सप्तशती';
 const fullTitle = title === siteTitle ? title : `${title} | ${siteTitle}`;
-const defaultDescription = 'दुर्गा सप्तशती का संपूर्ण पाठ, अर्थ और विधि सहित';
+const defaultDescription = 'दुर्गा सप्तशती का संपूर्ण पाठ, अर्थ और विधि सहित। 700 श्लोक, 13 अध्याय, देवी दुर्गा की महिमा।';
 const siteUrl = 'https://durga-saptashati.pages.dev';
+const defaultImage = '/images/og-image.jpg';
 ---
 
 <!DOCTYPE html>
@@ -24,31 +25,51 @@ const siteUrl = 'https://durga-saptashati.pages.dev';
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     
+    <!-- Primary Meta Tags -->
     <title>{fullTitle}</title>
     <meta name="description" content={description || defaultDescription} />
-    <meta name="keywords" content={(keywords || ['दुर्गा सप्तशती', 'दुर्गा']).join(', ')} />
+    <meta name="keywords" content={(keywords || ['दुर्गा सप्तशती', 'दुर्गा', 'श्री दुर्गा', 'चंडी पाठ', 'देवी महात्म्य']).join(', ')} />
     <link rel="canonical" href={canonical || siteUrl} />
 
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description || defaultDescription} />
-    <meta property="og:image" content={ogImage || '/images/og-image.jpg'} />
+    <meta property="og:image" content={ogImage || defaultImage} />
     <meta property="og:url" content={canonical || siteUrl} />
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta property="og:site_name" content={siteTitle} />
 
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description || defaultDescription} />
+    <meta name="twitter:image" content={ogImage || defaultImage} />
+
+    <!-- Icons -->
     <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg" />
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     
+    <!-- Preconnect for Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <!-- Global Styles -->
     <style is:global>
       @import '../styles/global.scss';
     </style>
     
+    <!-- Dark Mode Initialization -->
     <script>
-      // Dark mode initialization
-      const theme = localStorage.getItem('theme');
-      if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-        document.documentElement.setAttribute('data-theme', 'dark');
-      }
+      (function() {
+        const theme = localStorage.getItem('theme');
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (theme === 'dark' || (!theme && prefersDark)) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
     </script>
   </head>
   
@@ -61,7 +82,7 @@ const siteUrl = 'https://durga-saptashati.pages.dev';
     
     <Footer />
     
-    <script src="/scripts/theme.js" defer></script>
+    <!-- Service Worker Registration -->
     <script src="/scripts/sw-register.js" defer></script>
   </body>
 </html>
