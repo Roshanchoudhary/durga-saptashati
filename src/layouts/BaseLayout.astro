@@ -39,7 +39,9 @@ const siteUrl = 'https://durga-saptashati.pages.dev';
     <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
     <link rel="manifest" href="/manifest.webmanifest" />
     
-    <link rel="stylesheet" href="/styles/global.css" />
+    <style is:global>
+      @import '../styles/global.scss';
+    </style>
     
     <script>
       // Dark mode initialization
