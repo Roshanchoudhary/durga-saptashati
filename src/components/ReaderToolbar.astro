@@ -23,61 +23,74 @@
   </div>
 </div>
 
-<script>
+<script is:inline>
   // Font size controls
   let fontSize = 16;
   
-  document.getElementById('decreaseFont')?.addEventListener('click', () => {
-    if (fontSize > 12) {
-      fontSize -= 2;
-      document.documentElement.style.fontSize = fontSize + 'px';
-      localStorage.setItem('fontSize', fontSize);
-    }
-  });
-  
-  document.getElementById('increaseFont')?.addEventListener('click', () => {
-    if (fontSize < 24) {
-      fontSize += 2;
-      document.documentElement.style.fontSize = fontSize + 'px';
-      localStorage.setItem('fontSize', fontSize);
-    }
-  });
-  
-  // Load saved font size
-  const savedSize = localStorage.getItem('fontSize');
-  if (savedSize) {
-    fontSize = parseInt(savedSize);
-    document.documentElement.style.fontSize = fontSize + 'px';
-  }
-  
-  // Reading progress
-  document.addEventListener('scroll', () => {
-    const scrollTop = window.scrollY;
-    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
+  document.addEventListener('DOMContentLoaded', () => {
+    const decreaseBtn = document.getElementById('decreaseFont');
+    const increaseBtn = document.getElementById('increaseFont');
+    const bookmarkBtn = document.getElementById('bookmarkBtn');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+    const currentSlug = window.location.pathname;
     
-    document.getElementById('progressFill')?.style.setProperty('width', progress + '%');
-    document.getElementById('progressText')?.textContent = progress + '%';
-  });
-  
-  // Bookmark
-  const bookmarkBtn = document.getElementById('bookmarkBtn');
-  const currentSlug = window.location.pathname;
-  let bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
-  
-  if (bookmarks.includes(currentSlug)) {
-    bookmarkBtn?.classList.add('active');
-  }
-  
-  bookmarkBtn?.addEventListener('click', () => {
-    const index = bookmarks.indexOf(currentSlug);
-    if (index > -1) {
-      bookmarks.splice(index, 1);
-      bookmarkBtn.classList.remove('active');
-    } else {
-      bookmarks.push(currentSlug);
-      bookmarkBtn.classList.add('active');
+    // Load saved font size
+    const savedSize = localStorage.getItem('fontSize');
+    if (savedSize) {
+      fontSize = parseInt(savedSize);
+      document.documentElement.style.fontSize = fontSize + 'px';
     }
-    localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+    
+    // Decrease font
+    decreaseBtn?.addEventListener('click', () => {
+      if (fontSize > 12) {
+        fontSize -= 2;
+        document.documentElement.style.fontSize = fontSize + 'px';
+        localStorage.setItem('fontSize', fontSize);
+      }
+    });
+    
+    // Increase font
+    increaseBtn?.addEventListener('click', () => {
+      if (fontSize < 24) {
+        fontSize += 2;
+        document.documentElement.style.fontSize = fontSize + 'px';
+        localStorage.setItem('fontSize', fontSize);
+      }
+    });
+    
+    // Reading progress
+    document.addEventListener('scroll', () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
+      
+      if (progressFill) {
+        progressFill.style.width = progress + '%';
+      }
+      if (progressText) {
+        progressText.textContent = progress + '%';
+      }
+    });
+    
+    // Bookmark
+    let bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+    
+    if (bookmarks.includes(currentSlug)) {
+      bookmarkBtn?.classList.add('active');
+    }
+    
+    bookmarkBtn?.addEventListener('click', () => {
+      const index = bookmarks.indexOf(currentSlug);
+      if (index > -1) {
+        bookmarks.splice(index, 1);
+        bookmarkBtn.classList.remove('active');
+      } else {
+        bookmarks.push(currentSlug);
+        bookmarkBtn.classList.add('active');
+      }
+      localStorage.setItem('bookmarks', JSON.stringify(bookmarks));
+    });
   });
 </script>
