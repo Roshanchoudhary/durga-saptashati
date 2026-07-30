@@ -7,15 +7,34 @@ export interface Props {
 const { items = [], currentSection } = Astro.props;
 
 const sections = {
-  'before-reading': { label: '📖 पढ़ने से पहले', icon: '📖' },
-  'chapters': { label: '🕉️ 13 अध्याय', icon: '🕉️' },
-  'after-reading': { label: '🙏 पढ़ने के बाद', icon: '🙏' },
-  'articles': { label: '📝 लेख', icon: '📝' }
+  'before-reading': { 
+    label: '📚 पढ़ने से पहले', 
+    icon: '📚',
+    order: 1
+  },
+  'chapters': { 
+    label: '🕉️ 13 अध्याय', 
+    icon: '🕉️',
+    order: 2
+  },
+  'after-reading': { 
+    label: '🙏 पढ़ने के बाद', 
+    icon: '🙏',
+    order: 3
+  },
+  'articles': { 
+    label: '📝 लेख', 
+    icon: '📝',
+    order: 4
+  }
 };
+
+// Sort sections by order
+const sortedSections = Object.entries(sections).sort((a, b) => a[1].order - b[1].order);
 ---
 
 <nav class="reader-nav-sidebar">
-  {Object.entries(sections).map(([key, section]) => {
+  {sortedSections.map(([key, section]) => {
     const sectionItems = items.filter(item => item.collection === key);
     if (!sectionItems.length) return null;
     
@@ -24,13 +43,21 @@ const sections = {
         <h4>{section.label}</h4>
         <ul>
           {sectionItems.map(item => {
-            const isActive = currentSection === key && item.slug === Astro.url.pathname.split('/').pop();
+            const itemSlug = item.slug;
+            const currentPath = Astro.url.pathname;
+            const isActive = currentSection === key && currentPath.includes(`/${key}/${itemSlug}`);
+            
+            // Check if it's a chapter to show number
+            const isChapter = key === 'chapters';
+            const chapterNum = item.data.order;
+            
             return (
               <li>
                 <a 
-                  href={`/${key}/${item.slug}`}
+                  href={`/${key}/${itemSlug}`}
                   class:list={['nav-link', { active: isActive }]}
                 >
+                  {isChapter && <span class="chapter-number">{chapterNum}.</span>}
                   {item.data.title}
                 </a>
               </li>
@@ -40,4 +67,100 @@ const sections = {
       </div>
     );
   })}
+  
+  <!-- Book Progress Summary -->
+  <div class="nav-footer">
+    <div class="nav-divider"></div>
+    <div class="nav-progress-summary">
+      <span class="nav-progress-label">📖 पढ़ने की प्रगति</span>
+      <div class="nav-progress-bar">
+        <div class="nav-progress-fill" id="navProgressFill" style="width: 0%;"></div>
+      </div>
+      <span class="nav-progress-text" id="navProgressText">0%</span>
+    </div>
+  </div>
 </nav>
+
+<style is:global>
+  .reader-nav-sidebar {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .nav-footer {
+    margin-top: auto;
+    padding-top: var(--space-4);
+  }
+  
+  .nav-divider {
+    height: 1px;
+    background: var(--border-light);
+    margin-bottom: var(--space-4);
+  }
+  
+  .nav-progress-summary {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-2) var(--space-2);
+    background: var(--bg-primary);
+    border-radius: var(--radius-sm);
+  }
+  
+  .nav-progress-label {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    flex-shrink: 0;
+  }
+  
+  .nav-progress-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--border-light);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+  
+  .nav-progress-fill {
+    height: 100%;
+    background: var(--accent-orange);
+    border-radius: var(--radius-full);
+    transition: width var(--transition-base);
+    width: 0%;
+  }
+  
+  .nav-progress-text {
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    min-width: 32px;
+    text-align: right;
+  }
+</style>
+
+<script is:inline>
+  // Update navigation progress based on reading progress
+  document.addEventListener('DOMContentLoaded', function() {
+    const currentPath = window.location.pathname;
+    
+    // Get all bookmarks and calculate progress
+    try {
+      const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+      const totalItems = document.querySelectorAll('.nav-section ul li a').length;
+      const readItems = bookmarks.length;
+      
+      if (totalItems > 0) {
+        const progress = Math.round((readItems / totalItems) * 100);
+        const fill = document.getElementById('navProgressFill');
+        const text = document.getElementById('navProgressText');
+        
+        if (fill) fill.style.width = Math.min(progress, 100) + '%';
+        if (text) text.textContent = Math.min(progress, 100) + '%';
+      }
+    } catch (e) {
+      // Silently fail
+    }
+  });
+</script>
