@@ -1,48 +1,71 @@
 <header class="header">
-  <div class="container header-inner">
+  <div class="header-inner">
+    <!-- Brand / Logo -->
     <a href="/" class="header-brand">
-      <img src="/images/logo.svg" alt="दुर्गा सप्तशती" width="36" height="36" />
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+        <path d="M2 17l10 5 10-5"/>
+        <path d="M2 12l10 5 10-5"/>
+      </svg>
       <span>दुर्गा सप्तशती</span>
     </a>
     
+    <!-- Navigation Links -->
     <nav class="header-nav">
-      <a href="/before-reading">पढ़ने से पहले</a>
-      <a href="/chapters">13 अध्याय</a>
-      <a href="/after-reading">पढ़ने के बाद</a>
-      <a href="/articles">लेख</a>
-      <a href="/search">🔍</a>
+      <a href="/" class:list={['nav-link', { active: Astro.url.pathname === '/' }]}>🏠 Home</a>
+      <a href="/before-reading" class:list={['nav-link', { active: Astro.url.pathname.includes('/before-reading') }]}>📖 पढ़ने से पहले</a>
+      <a href="/chapters" class:list={['nav-link', { active: Astro.url.pathname.includes('/chapters') }]}>🕉️ 13 अध्याय</a>
+      <a href="/after-reading" class:list={['nav-link', { active: Astro.url.pathname.includes('/after-reading') }]}>🙏 पढ़ने के बाद</a>
+      <a href="/search" class:list={['nav-link', { active: Astro.url.pathname === '/search' }]}>🔍</a>
     </nav>
     
+    <!-- Right Actions -->
     <div class="header-actions">
       <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
-        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <circle cx="12" cy="12" r="5"/>
           <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
         </svg>
-        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"/>
         </svg>
       </button>
       <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
           <path d="M3 12h18M3 6h18M3 18h18"/>
         </svg>
       </button>
     </div>
   </div>
   
+  <!-- Mobile Menu -->
   <div class="mobile-menu" id="mobileMenu">
-    <a href="/before-reading">पढ़ने से पहले</a>
-    <a href="/chapters">13 अध्याय</a>
-    <a href="/after-reading">पढ़ने के बाद</a>
-    <a href="/articles">लेख</a>
-    <a href="/search">खोज</a>
-    <a href="/about">परिचय</a>
+    <a href="/">🏠 Home</a>
+    <a href="/before-reading">📖 पढ़ने से पहले</a>
+    <a href="/chapters">🕉️ 13 अध्याय</a>
+    <a href="/after-reading">🙏 पढ़ने के बाद</a>
+    <a href="/search">🔍 खोज</a>
+    <a href="/about">ℹ️ परिचय</a>
   </div>
 </header>
 
-<script>
-  document.getElementById('mobileToggle')?.addEventListener('click', () => {
-    document.getElementById('mobileMenu')?.classList.toggle('open');
+<script is:inline>
+  // Mobile menu toggle
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.getElementById('mobileToggle');
+    const mobileMenu = document.getElementById('mobileMenu');
+    
+    if (mobileToggle && mobileMenu) {
+      mobileToggle.addEventListener('click', function() {
+        mobileMenu.classList.toggle('open');
+      });
+      
+      // Close menu when clicking a link
+      mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', function() {
+          mobileMenu.classList.remove('open');
+        });
+      });
+    }
   });
 </script>
