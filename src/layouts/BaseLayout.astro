@@ -1,0 +1,64 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+  keywords?: string[];
+  ogImage?: string;
+  canonical?: string;
+}
+
+const { title, description, keywords, ogImage, canonical } = Astro.props;
+
+const siteTitle = 'दुर्गा सप्तशती';
+const fullTitle = title === siteTitle ? title : `${title} | ${siteTitle}`;
+const defaultDescription = 'दुर्गा सप्तशती का संपूर्ण पाठ, अर्थ और विधि सहित';
+const siteUrl = 'https://durgasaptashati.com';
+---
+
+<!DOCTYPE html>
+<html lang="hi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    
+    <title>{fullTitle}</title>
+    <meta name="description" content={description || defaultDescription} />
+    <meta name="keywords" content={(keywords || ['दुर्गा सप्तशती', 'दुर्गा']).join(', ')} />
+    <link rel="canonical" href={canonical || siteUrl} />
+
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description || defaultDescription} />
+    <meta property="og:image" content={ogImage || '/images/og-image.jpg'} />
+    <meta property="og:url" content={canonical || siteUrl} />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" type="image/svg+xml" href="/icons/favicon.svg" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    
+    <link rel="stylesheet" href="/styles/global.css" />
+    
+    <script>
+      // Dark mode initialization
+      const theme = localStorage.getItem('theme');
+      if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      }
+    </script>
+  </head>
+  
+  <body>
+    <slot name="header">
+      <Header />
+    </slot>
+    
+    <main>
+      <slot />
+    </main>
+    
+    <Footer />
+    
+    <script src="/scripts/theme.js" defer></script>
+    <script src="/scripts/sw-register.js" defer></script>
+  </body>
+</html>
