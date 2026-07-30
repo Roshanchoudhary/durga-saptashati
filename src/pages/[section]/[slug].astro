@@ -30,12 +30,23 @@ const { item, allItems } = Astro.props;
 const { data, collection, slug } = item;
 const { Content } = await item.render();
 
-// Find prev/next
+// Find prev/next within same section
 const sectionItems = allItems.filter(i => i.collection === collection);
 const sorted = sectionItems.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
 const index = sorted.findIndex(i => i.slug === slug);
 const prev = index > 0 ? sorted[index - 1] : null;
 const next = index < sorted.length - 1 ? sorted[index + 1] : null;
+
+// Get section label
+const sectionLabels = {
+  'before-reading': '📚 पढ़ने से पहले',
+  'chapters': '🕉️ अध्याय',
+  'after-reading': '🙏 पढ़ने के बाद',
+  'articles': '📝 लेख'
+};
+
+// Get collection name for display
+const collectionDisplay = sectionLabels[collection as keyof typeof sectionLabels] || collection;
 ---
 
 <ReaderLayout 
@@ -44,18 +55,96 @@ const next = index < sorted.length - 1 ? sorted[index + 1] : null;
   section={collection}
   navItems={allItems}
 >
+  <!-- Main Content -->
   <Content />
   
+  <!-- Navigation - Prev / Next -->
   <div slot="nav" class="reader-nav">
-    {prev && (
+    {prev ? (
       <a href={`/${collection}/${prev.slug}`} class="reader-nav-btn prev">
-        ← {prev.data.title}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+          <path d="M19 12H5" />
+          <path d="M12 19l-7-7 7-7" />
+        </svg>
+        <span>
+          <span style="display: block; font-size: 0.65rem; color: var(--text-muted); font-weight: 400;">पिछला</span>
+          {prev.data.title}
+        </span>
       </a>
+    ) : (
+      <span class="reader-nav-btn prev disabled">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+          <path d="M19 12H5" />
+          <path d="M12 19l-7-7 7-7" />
+        </svg>
+        <span>
+          <span style="display: block; font-size: 0.65rem; color: var(--text-muted); font-weight: 400;">पिछला</span>
+          पहला पृष्ठ
+        </span>
+      </span>
     )}
-    {next && (
+    
+    <a href={`/${collection}`} class="reader-nav-btn center" title="सभी {collectionDisplay}">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+      </svg>
+    </a>
+    
+    {next ? (
       <a href={`/${collection}/${next.slug}`} class="reader-nav-btn next">
-        {next.data.title} →
+        <span>
+          <span style="display: block; font-size: 0.65rem; color: rgba(255,255,255,0.7); font-weight: 400;">अगला</span>
+          {next.data.title}
+        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+          <path d="M5 12h14" />
+          <path d="M12 5l7 7-7 7" />
+        </svg>
       </a>
+    ) : (
+      <span class="reader-nav-btn next disabled">
+        <span>
+          <span style="display: block; font-size: 0.65rem; color: rgba(255,255,255,0.5); font-weight: 400;">अगला</span>
+          अंतिम पृष्ठ
+        </span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width: 18px; height: 18px;">
+          <path d="M5 12h14" />
+          <path d="M12 5l7 7-7 7" />
+        </svg>
+      </span>
     )}
   </div>
 </ReaderLayout>
+
+<style is:global>
+  .reader-nav-btn.center {
+    background: var(--bg-primary);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-light);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-sm);
+    transition: all var(--transition-fast);
+  }
+  .reader-nav-btn.center:hover {
+    background: var(--bg-secondary);
+    border-color: var(--accent-orange);
+    color: var(--accent-orange);
+  }
+  
+  .reader-nav-btn.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+  .reader-nav-btn.disabled:hover {
+    transform: none;
+  }
+  
+  .reader-nav-btn.prev:not(.disabled):hover,
+  .reader-nav-btn.next:not(.disabled):hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+</style>
