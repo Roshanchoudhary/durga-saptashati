@@ -1,52 +1,96 @@
 <footer class="footer">
   <div class="container">
     <div class="footer-grid">
+      <!-- Brand -->
       <div class="footer-section">
-        <h3>दुर्गा सप्तशती</h3>
-        <p>श्री दुर्गा सप्तशती का संपूर्ण पाठ, अर्थ और विधि सहित</p>
+        <h3>📖 दुर्गा सप्तशती</h3>
+        <p>
+          श्री दुर्गा सप्तशती का संपूर्ण पाठ, अर्थ और विधि सहित।<br />
+          700 श्लोक · 13 अध्याय · देवी दुर्गा की महिमा।
+        </p>
+        <div style="margin-top: var(--space-4); display: flex; gap: var(--space-3);">
+          <span style="font-size: var(--font-size-small); color: var(--text-muted);">🙏 जय माँ दुर्गा</span>
+        </div>
       </div>
       
+      <!-- Quick Links -->
       <div class="footer-section">
         <h4>त्वरित लिंक</h4>
         <ul>
-          <li><a href="/before-reading">पढ़ने से पहले</a></li>
-          <li><a href="/chapters">13 अध्याय</a></li>
-          <li><a href="/after-reading">पढ़ने के बाद</a></li>
-          <li><a href="/articles">लेख</a></li>
+          <li><a href="/">🏠 Home</a></li>
+          <li><a href="/before-reading">📖 पढ़ने से पहले</a></li>
+          <li><a href="/chapters">🕉️ 13 अध्याय</a></li>
+          <li><a href="/after-reading">🙏 पढ़ने के बाद</a></li>
+          <li><a href="/articles">📝 लेख</a></li>
         </ul>
       </div>
       
+      <!-- Resources -->
       <div class="footer-section">
-        <h4>अन्य</h4>
+        <h4>संसाधन</h4>
         <ul>
-          <li><a href="/about">परिचय</a></li>
-          <li><a href="/privacy">गोपनीयता</a></li>
-          <li><a href="/terms">नियम</a></li>
-        </ul>
-      </div>
-      
-      <div class="footer-section">
-        <h4>डाउनलोड</h4>
-        <ul>
+          <li><a href="/search">🔍 खोज</a></li>
+          <li><a href="/about">ℹ️ परिचय</a></li>
           <li><a href="#" id="installPWA">📱 App Install करें</a></li>
+        </ul>
+      </div>
+      
+      <!-- Legal -->
+      <div class="footer-section">
+        <h4>कानूनी</h4>
+        <ul>
+          <li><a href="/privacy">🔒 गोपनीयता</a></li>
+          <li><a href="/terms">📋 नियम</a></li>
+          <li><a href="/sitemap.xml">🗺️ Sitemap</a></li>
         </ul>
       </div>
     </div>
     
     <div class="footer-bottom">
-      <p>© {new Date().getFullYear()} दुर्गा सप्तशती. सर्वाधिकार सुरक्षित</p>
+      <p>
+        © {new Date().getFullYear()} दुर्गा सप्तशती · 
+        <span style="color: var(--text-muted);">सर्वाधिकार सुरक्षित</span>
+      </p>
+      <p style="font-size: 0.7rem; color: var(--text-muted); margin-top: var(--space-2);">
+        🙏 ॐ दुर्गायै नमः
+      </p>
     </div>
   </div>
 </footer>
 
-<script>
-  // PWA Install
-  let deferredPrompt;
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    document.getElementById('installPWA')?.addEventListener('click', () => {
-      deferredPrompt.prompt();
+<script is:inline>
+  // ===== PWA INSTALL =====
+  document.addEventListener('DOMContentLoaded', function() {
+    let deferredPrompt;
+    
+    window.addEventListener('beforeinstallprompt', function(e) {
+      e.preventDefault();
+      deferredPrompt = e;
+      
+      const installBtn = document.getElementById('installPWA');
+      if (installBtn) {
+        installBtn.style.display = 'inline-block';
+        installBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then(function(choiceResult) {
+              if (choiceResult.outcome === 'accepted') {
+                console.log('User accepted the install prompt');
+              }
+              deferredPrompt = null;
+            });
+          }
+        });
+      }
+    });
+    
+    // Hide install button if already installed or not supported
+    window.addEventListener('appinstalled', function() {
+      const installBtn = document.getElementById('installPWA');
+      if (installBtn) {
+        installBtn.style.display = 'none';
+      }
     });
   });
 </script>
