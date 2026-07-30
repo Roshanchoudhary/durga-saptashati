@@ -1,0 +1,43 @@
+---
+export interface Props {
+  items: any[];
+  currentSection?: string;
+}
+
+const { items = [], currentSection } = Astro.props;
+
+const sections = {
+  'before-reading': { label: '📖 पढ़ने से पहले', icon: '📖' },
+  'chapters': { label: '🕉️ 13 अध्याय', icon: '🕉️' },
+  'after-reading': { label: '🙏 पढ़ने के बाद', icon: '🙏' },
+  'articles': { label: '📝 लेख', icon: '📝' }
+};
+---
+
+<nav class="reader-nav-sidebar">
+  {Object.entries(sections).map(([key, section]) => {
+    const sectionItems = items.filter(item => item.collection === key);
+    if (!sectionItems.length) return null;
+    
+    return (
+      <div class="nav-section">
+        <h4>{section.label}</h4>
+        <ul>
+          {sectionItems.map(item => {
+            const isActive = currentSection === key && item.slug === Astro.url.pathname.split('/').pop();
+            return (
+              <li>
+                <a 
+                  href={`/${key}/${item.slug}`}
+                  class:list={['nav-link', { active: isActive }]}
+                >
+                  {item.data.title}
+                </a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    );
+  })}
+</nav>
