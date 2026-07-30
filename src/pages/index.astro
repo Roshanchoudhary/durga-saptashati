@@ -1,0 +1,138 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const beforeReading = await getCollection('before-reading');
+const chapters = await getCollection('chapters');
+const afterReading = await getCollection('after-reading');
+const articles = await getCollection('articles');
+---
+
+<BaseLayout title="दुर्गा सप्तशती">
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1><span>दुर्गा</span> सप्तशती</h1>
+        <p>श्री दुर्गा सप्तशती का संपूर्ण पाठ, अर्थ और विधि सहित</p>
+        <div class="hero-actions">
+          <a href="/chapters/chapter-1" class="btn btn-primary">📖 पाठ शुरू करें</a>
+          <a href="/about" class="btn btn-secondary">और जानें</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  <!-- Continue Reading -->
+  <section class="section section-alt" id="continueSection">
+    <div class="container">
+      <div class="section-header">
+        <h2>⏳ जारी रखें</h2>
+      </div>
+      <div id="continueContent" class="grid-cards">
+        <!-- Dynamic content -->
+      </div>
+    </div>
+  </section>
+  
+  <!-- Before Reading -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>📖 पढ़ने से पहले</h2>
+      </div>
+      <div class="grid-cards">
+        {beforeReading.map(item => (
+          <a href={`/before-reading/${item.slug}`} class="card">
+            <span class="card-badge">पढ़ने से पहले</span>
+            <h3>{item.data.title}</h3>
+            {item.data.description && <p>{item.data.description}</p>}
+            <span class="card-arrow">→</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Chapters -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2>🕉️ 13 अध्याय</h2>
+      </div>
+      <div class="grid-cards">
+        {chapters.sort((a,b) => a.data.order - b.data.order).map(item => (
+          <a href={`/chapters/${item.slug}`} class="card">
+            <span class="card-badge">अध्याय {item.data.order}</span>
+            <h3>{item.data.title}</h3>
+            {item.data.description && <p>{item.data.description}</p>}
+            <span class="card-arrow">→</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- After Reading -->
+  <section class="section">
+    <div class="container">
+      <div class="section-header">
+        <h2>🙏 पढ़ने के बाद</h2>
+      </div>
+      <div class="grid-cards">
+        {afterReading.map(item => (
+          <a href={`/after-reading/${item.slug}`} class="card">
+            <span class="card-badge">पढ़ने के बाद</span>
+            <h3>{item.data.title}</h3>
+            {item.data.description && <p>{item.data.description}</p>}
+            <span class="card-arrow">→</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+  
+  <!-- Articles -->
+  <section class="section section-alt">
+    <div class="container">
+      <div class="section-header">
+        <h2>📝 लेख</h2>
+      </div>
+      <div class="grid-cards">
+        {articles.map(item => (
+          <a href={`/articles/${item.slug}`} class="card">
+            <span class="card-badge">लेख</span>
+            <h3>{item.data.title}</h3>
+            {item.data.description && <p>{item.data.description}</p>}
+            <span class="card-arrow">→</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  // Continue reading
+  document.addEventListener('DOMContentLoaded', () => {
+    const container = document.getElementById('continueContent');
+    const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
+    
+    if (bookmarks.length) {
+      const last = bookmarks[bookmarks.length - 1];
+      container.innerHTML = `
+        <div class="card" style="grid-column: 1 / -1;">
+          <h3>पिछली बार पढ़ा</h3>
+          <p style="margin: var(--spacing-2) 0;">${last.replace(/^\/+/, '')}</p>
+          <a href="${last}" class="btn btn-primary">जारी रखें →</a>
+        </div>
+      `;
+    } else {
+      container.innerHTML = `
+        <div style="grid-column: 1 / -1; text-align: center; color: var(--color-gray-500); padding: var(--spacing-8);">
+          कोई पढ़ाई नहीं मिली। पाठ शुरू करें!
+        </div>
+      `;
+    }
+  });
+</script>
