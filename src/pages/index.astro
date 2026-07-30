@@ -7,89 +7,108 @@ const chapters = await getCollection('chapters');
 const afterReading = await getCollection('after-reading');
 const articles = await getCollection('articles');
 
-// Get total chapters count
 const totalChapters = chapters.length;
 ---
 
 <BaseLayout title="दुर्गा सप्तशती">
-  <!-- ===== HERO SECTION ===== -->
-  <section class="hero">
+  <!-- ===== HERO - PROFESSIONAL DESIGN ===== -->
+  <section class="hero-modern">
+    <div class="hero-modern-bg">
+      <div class="hero-modern-pattern"></div>
+    </div>
     <div class="container">
-      <div class="hero-content">
-        <div class="hero-badge">📖 श्री दुर्गा सप्तशती</div>
+      <div class="hero-modern-content">
+        <div class="hero-modern-badge">
+          <span>🙏 जय माँ दुर्गा</span>
+        </div>
         <h1>
-          <span>दुर्गा</span> सप्तशती
+          <span class="hero-title-main">दुर्गा</span>
+          <span class="hero-title-sub">सप्तशती</span>
         </h1>
-        <p>
+        <p class="hero-modern-desc">
           700 श्लोक · 13 अध्याय · देवी दुर्गा की महिमा
         </p>
-        <p class="hero-sub">
+        <p class="hero-modern-sub">
           संपूर्ण पाठ, अर्थ और विधि सहित
         </p>
-        <div class="hero-actions">
-          <a href="/chapters/chapter-1" class="btn btn-primary">
-            📖 पाठ शुरू करें
+        <div class="hero-modern-actions">
+          <a href="/chapters/chapter-1" class="btn-primary-modern">
+            <span>📖</span> पाठ शुरू करें
           </a>
-          <a href="/about" class="btn btn-secondary">
-            ℹ️ और जानें
+          <a href="/about" class="btn-secondary-modern">
+            और जानें
           </a>
         </div>
-        <div class="hero-stats">
-          <span>📚 {totalChapters} अध्याय</span>
-          <span>📝 700 श्लोक</span>
-          <span>🙏 देवी दुर्गा</span>
+        <div class="hero-modern-stats">
+          <div class="stat-item">
+            <span class="stat-number">13</span>
+            <span class="stat-label">अध्याय</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">700</span>
+            <span class="stat-label">श्लोक</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-number">108</span>
+            <span class="stat-label">नाम</span>
+          </div>
         </div>
       </div>
     </div>
   </section>
   
   <!-- ===== CONTINUE READING ===== -->
-  <section class="section section-alt" id="continueSection">
+  <section class="section-continue" id="continueSection">
     <div class="container">
-      <div class="section-header">
-        <h2>⏳ जारी रखें</h2>
+      <div class="section-header-modern">
+        <span class="section-icon">⏳</span>
+        <h2>जारी रखें</h2>
         <p>आपकी पिछली पढ़ाई</p>
       </div>
-      <div id="continueContent" class="grid-cards">
-        <!-- Dynamic content loaded by JavaScript -->
+      <div id="continueContent">
+        <!-- Dynamic content -->
       </div>
     </div>
   </section>
   
   <!-- ===== BEFORE READING ===== -->
-  <section class="section">
+  <section class="section-modern">
     <div class="container">
-      <div class="section-header">
-        <h2>📖 पढ़ने से पहले</h2>
+      <div class="section-header-modern">
+        <span class="section-icon">📖</span>
+        <h2>पढ़ने से पहले</h2>
         <p>पाठ से पहले जानने योग्य बातें</p>
       </div>
-      <div class="grid-cards">
+      <div class="grid-modern">
         {beforeReading.sort((a,b) => (a.data.order || 0) - (b.data.order || 0)).map(item => (
-          <a href={`/before-reading/${item.slug}`} class="card">
-            <span class="card-badge">पढ़ने से पहले</span>
+          <a href={`/before-reading/${item.slug}`} class="card-modern">
+            <div class="card-modern-icon">📿</div>
             <h3>{item.data.title}</h3>
             {item.data.description && <p>{item.data.description}</p>}
-            <span class="card-arrow">→</span>
+            <span class="card-modern-arrow">→</span>
           </a>
         ))}
       </div>
     </div>
   </section>
   
-  <!-- ===== 13 CHAPTERS ===== -->
-  <section class="section section-alt">
+  <!-- ===== CHAPTERS ===== -->
+  <section class="section-modern section-alt-modern">
     <div class="container">
-      <div class="section-header">
-        <h2>🕉️ 13 अध्याय</h2>
+      <div class="section-header-modern">
+        <span class="section-icon">🕉️</span>
+        <h2>13 अध्याय</h2>
         <p>दुर्गा सप्तशती के सभी अध्याय</p>
       </div>
-      <div class="grid-cards">
+      <div class="grid-modern grid-chapters">
         {chapters.sort((a,b) => (a.data.order || 0) - (b.data.order || 0)).map(item => (
-          <a href={`/chapters/${item.slug}`} class="card">
-            <span class="card-badge">अध्याय {item.data.order}</span>
+          <a href={`/chapters/${item.slug}`} class="card-modern card-chapter">
+            <div class="card-chapter-number">{item.data.order}</div>
             <h3>{item.data.title}</h3>
             {item.data.description && <p>{item.data.description}</p>}
-            <span class="card-arrow">→</span>
+            <span class="card-modern-arrow">→</span>
           </a>
         ))}
       </div>
@@ -97,19 +116,20 @@ const totalChapters = chapters.length;
   </section>
   
   <!-- ===== AFTER READING ===== -->
-  <section class="section">
+  <section class="section-modern">
     <div class="container">
-      <div class="section-header">
-        <h2>🙏 पढ़ने के बाद</h2>
+      <div class="section-header-modern">
+        <span class="section-icon">🙏</span>
+        <h2>पढ़ने के बाद</h2>
         <p>पाठ के बाद की विधियाँ और स्तोत्र</p>
       </div>
-      <div class="grid-cards">
+      <div class="grid-modern">
         {afterReading.sort((a,b) => (a.data.order || 0) - (b.data.order || 0)).map(item => (
-          <a href={`/after-reading/${item.slug}`} class="card">
-            <span class="card-badge">पढ़ने के बाद</span>
+          <a href={`/after-reading/${item.slug}`} class="card-modern">
+            <div class="card-modern-icon">🌸</div>
             <h3>{item.data.title}</h3>
             {item.data.description && <p>{item.data.description}</p>}
-            <span class="card-arrow">→</span>
+            <span class="card-modern-arrow">→</span>
           </a>
         ))}
       </div>
@@ -117,19 +137,20 @@ const totalChapters = chapters.length;
   </section>
   
   <!-- ===== ARTICLES ===== -->
-  <section class="section section-alt">
+  <section class="section-modern section-alt-modern">
     <div class="container">
-      <div class="section-header">
-        <h2>📝 लेख</h2>
+      <div class="section-header-modern">
+        <span class="section-icon">📝</span>
+        <h2>लेख</h2>
         <p>दुर्गा सप्तशती से जुड़े लेख</p>
       </div>
-      <div class="grid-cards">
+      <div class="grid-modern">
         {articles.sort((a,b) => (a.data.order || 0) - (b.data.order || 0)).map(item => (
-          <a href={`/articles/${item.slug}`} class="card">
-            <span class="card-badge">लेख</span>
+          <a href={`/articles/${item.slug}`} class="card-modern">
+            <div class="card-modern-icon">✍️</div>
             <h3>{item.data.title}</h3>
             {item.data.description && <p>{item.data.description}</p>}
-            <span class="card-arrow">→</span>
+            <span class="card-modern-arrow">→</span>
           </a>
         ))}
       </div>
@@ -138,7 +159,45 @@ const totalChapters = chapters.length;
 </BaseLayout>
 
 <style is:global>
-  .hero-badge {
+  /* ===== HERO MODERN ===== */
+  .hero-modern {
+    position: relative;
+    padding: var(--space-16) 0 var(--space-12);
+    background: linear-gradient(135deg, #fdf6f0 0%, #f5e6d3 50%, #fdf6f0 100%);
+    overflow: hidden;
+    text-align: center;
+  }
+  
+  [data-theme="dark"] .hero-modern {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a1f1a 50%, #1a1a1a 100%);
+  }
+  
+  .hero-modern-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  
+  .hero-modern-pattern {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(192, 57, 43, 0.04) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+  
+  .hero-modern-content {
+    position: relative;
+    z-index: 1;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  
+  .hero-modern-badge {
     display: inline-block;
     padding: var(--space-1) var(--space-4);
     background: rgba(192, 57, 43, 0.08);
@@ -146,41 +205,373 @@ const totalChapters = chapters.length;
     border-radius: var(--radius-full);
     font-size: 0.7rem;
     font-weight: 600;
-    text-transform: uppercase;
     letter-spacing: var(--letter-spacing-wider);
     margin-bottom: var(--space-4);
   }
   
-  .hero-sub {
-    font-size: var(--font-size-medium) !important;
-    color: var(--text-muted) !important;
-    margin-top: -var(--space-2) !important;
-    margin-bottom: var(--space-6) !important;
+  .hero-modern-content h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: var(--space-4);
   }
   
-  .hero-stats {
-    display: flex;
-    gap: var(--space-6);
-    justify-content: center;
-    margin-top: var(--space-8);
-    font-size: var(--font-size-small);
+  .hero-title-main {
+    color: var(--accent-orange);
+  }
+  
+  .hero-title-sub {
+    color: var(--text-primary);
+  }
+  
+  .hero-modern-desc {
+    font-size: var(--font-size-large);
     color: var(--text-secondary);
+    margin-bottom: var(--space-2);
   }
   
-  .hero-stats span {
+  .hero-modern-sub {
+    font-size: var(--font-size-medium);
+    color: var(--text-muted);
+    margin-bottom: var(--space-6);
+  }
+  
+  .hero-modern-actions {
     display: flex;
+    gap: var(--space-4);
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: var(--space-8);
+  }
+  
+  .btn-primary-modern {
+    display: inline-flex;
     align-items: center;
     gap: var(--space-2);
+    padding: var(--space-3) var(--space-6);
+    background: var(--accent-orange);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: var(--font-base);
+    font-size: var(--font-size-small);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+  .btn-primary-modern:hover {
+    background: #a93226;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(192, 57, 43, 0.3);
+    color: #ffffff;
+  }
+  
+  .btn-secondary-modern {
+    display: inline-flex;
+    align-items: center;
+    padding: var(--space-3) var(--space-6);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    font-family: var(--font-base);
+    font-size: var(--font-size-small);
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+  .btn-secondary-modern:hover {
+    border-color: var(--accent-orange);
+    background: var(--bg-primary);
+  }
+  
+  .hero-modern-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-6);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border-light);
+  }
+  
+  .stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .stat-number {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--accent-orange);
+    line-height: 1.2;
+  }
+  
+  .stat-label {
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-wider);
+  }
+  
+  .stat-divider {
+    width: 1px;
+    height: 32px;
+    background: var(--border-light);
   }
   
   @media (max-width: 480px) {
-    .hero-stats {
+    .hero-modern-content h1 {
+      font-size: 2.5rem;
+    }
+    .hero-modern-stats {
+      gap: var(--space-4);
+      flex-wrap: wrap;
+    }
+    .stat-divider {
+      display: none;
+    }
+    .hero-modern-actions {
       flex-direction: column;
-      gap: var(--space-2);
       align-items: center;
     }
-    .hero-badge {
-      font-size: 0.6rem;
+  }
+  
+  /* ===== SECTION MODERN ===== */
+  .section-modern {
+    padding: var(--space-12) 0;
+  }
+  
+  .section-alt-modern {
+    background: var(--bg-secondary);
+  }
+  
+  .section-continue {
+    padding: var(--space-8) 0 var(--space-12);
+    background: var(--bg-secondary);
+  }
+  
+  .section-header-modern {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin-bottom: var(--space-8);
+  }
+  
+  .section-icon {
+    font-size: 2rem;
+    margin-bottom: var(--space-2);
+  }
+  
+  .section-header-modern h2 {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+  
+  .section-header-modern p {
+    color: var(--text-secondary);
+    font-size: var(--font-size-medium);
+    margin-top: var(--space-1);
+  }
+  
+  /* ===== GRID MODERN ===== */
+  .grid-modern {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: var(--space-6);
+  }
+  
+  .grid-chapters {
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  }
+  
+  /* ===== CARD MODERN ===== */
+  .card-modern {
+    display: block;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    transition: all var(--transition-base);
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .card-modern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-orange), var(--accent-gold));
+    opacity: 0;
+    transition: opacity var(--transition-base);
+  }
+  
+  .card-modern:hover::before {
+    opacity: 1;
+  }
+  
+  .card-modern:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--accent-orange);
+  }
+  
+  .card-modern-icon {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-3);
+  }
+  
+  .card-modern h3 {
+    color: var(--text-primary);
+    font-size: var(--font-size-medium);
+    font-weight: 600;
+    margin-bottom: var(--space-2);
+  }
+  
+  .card-modern p {
+    color: var(--text-secondary);
+    font-size: var(--font-size-small);
+    line-height: var(--line-height-relaxed);
+    margin-bottom: var(--space-3);
+  }
+  
+  .card-modern-arrow {
+    display: inline-block;
+    color: var(--accent-orange);
+    font-weight: 600;
+    transition: transform var(--transition-fast);
+  }
+  
+  .card-modern:hover .card-modern-arrow {
+    transform: translateX(4px);
+  }
+  
+  /* ===== CHAPTER CARD ===== */
+  .card-chapter {
+    text-align: center;
+    padding: var(--space-6) var(--space-4);
+  }
+  
+  .card-chapter-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    background: var(--bg-primary);
+    color: var(--accent-orange);
+    border-radius: 50%;
+    font-size: var(--font-size-large);
+    font-weight: 700;
+    margin-bottom: var(--space-3);
+    border: 2px solid var(--border-light);
+    transition: all var(--transition-base);
+  }
+  
+  .card-chapter:hover .card-chapter-number {
+    background: var(--accent-orange);
+    color: #ffffff;
+    border-color: var(--accent-orange);
+  }
+  
+  /* ===== CONTINUE CARD ===== */
+  .continue-card {
+    background: var(--bg-secondary);
+    border: 2px solid var(--accent-orange);
+    border-radius: var(--radius-md);
+    padding: var(--space-6) var(--space-8);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    transition: all var(--transition-base);
+  }
+  
+  .continue-card:hover {
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .continue-card-info h3 {
+    font-size: var(--font-size-large);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: var(--space-1);
+  }
+  
+  .continue-card-info p {
+    color: var(--text-secondary);
+    font-size: var(--font-size-small);
+  }
+  
+  .continue-card-progress {
+    margin-top: var(--space-3);
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .continue-card-progress .progress-track {
+    height: 4px;
+    background: var(--border-light);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+  }
+  
+  .continue-card-progress .progress-fill {
+    height: 100%;
+    background: var(--accent-orange);
+    border-radius: var(--radius-full);
+    transition: width var(--transition-base);
+  }
+  
+  .continue-card .btn-primary-modern {
+    flex-shrink: 0;
+  }
+  
+  .continue-empty {
+    text-align: center;
+    padding: var(--space-8);
+    color: var(--text-muted);
+    background: var(--bg-primary);
+    border-radius: var(--radius-md);
+    border: 1px dashed var(--border-light);
+  }
+  
+  .continue-empty .empty-icon {
+    font-size: 3rem;
+    margin-bottom: var(--space-3);
+  }
+  
+  .continue-empty p {
+    font-size: var(--font-size-medium);
+  }
+  
+  .continue-empty .empty-sub {
+    font-size: var(--font-size-small);
+    color: var(--text-muted);
+    margin-top: var(--space-1);
+  }
+  
+  @media (max-width: 768px) {
+    .continue-card {
+      flex-direction: column;
+      text-align: center;
+      padding: var(--space-4);
+    }
+    .continue-card-progress {
+      max-width: 100%;
+    }
+    .grid-chapters {
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     }
   }
 </style>
@@ -192,55 +583,44 @@ const totalChapters = chapters.length;
     if (!container) return;
     
     try {
-      // Get bookmarks (reading history)
       const bookmarks = JSON.parse(localStorage.getItem('bookmarks') || '[]');
       
       if (bookmarks.length > 0) {
-        // Get the last read item
         const last = bookmarks[bookmarks.length - 1];
         const title = last.replace(/^\/+/, '').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-        
-        // Get reading progress for this item
         const progressData = JSON.parse(localStorage.getItem('readingProgress') || '{}');
         const progress = progressData[last] || 0;
         
         container.innerHTML = `
-          <div class="card" style="grid-column: 1 / -1; border-color: var(--accent-orange);">
-            <div style="display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: var(--space-4);">
-              <div>
-                <span class="card-badge" style="background: rgba(192, 57, 43, 0.1); color: var(--accent-orange);">⏳ जारी रखें</span>
-                <h3 style="margin-bottom: var(--space-2);">${title}</h3>
-                <p style="color: var(--text-muted); font-size: var(--font-size-small);">
-                  पढ़ाई: ${progress}%
-                </p>
-              </div>
-              <a href="${last}" class="btn btn-primary" style="flex-shrink: 0;">
-                📖 जारी रखें →
-              </a>
-            </div>
-            ${progress > 0 ? `
-              <div style="margin-top: var(--space-4);">
-                <div style="height: 4px; background: var(--border-light); border-radius: var(--radius-full); overflow: hidden;">
-                  <div style="height: 100%; width: ${progress}%; background: var(--accent-orange); border-radius: var(--radius-full); transition: width var(--transition-base);"></div>
+          <div class="continue-card">
+            <div class="continue-card-info">
+              <h3>📖 ${title}</h3>
+              <p>पढ़ाई: ${progress}%</p>
+              <div class="continue-card-progress">
+                <div class="progress-track">
+                  <div class="progress-fill" style="width: ${progress}%;"></div>
                 </div>
               </div>
-            ` : ''}
+            </div>
+            <a href="${last}" class="btn-primary-modern">
+              जारी रखें →
+            </a>
           </div>
         `;
       } else {
         container.innerHTML = `
-          <div style="grid-column: 1 / -1; text-align: center; padding: var(--space-8); color: var(--text-muted);">
-            <p style="font-size: var(--font-size-large); margin-bottom: var(--space-2);">📖</p>
-            <p>कोई पढ़ाई नहीं मिली।</p>
-            <p style="font-size: var(--font-size-small);">पाठ शुरू करें और यहाँ जारी रखें!</p>
+          <div class="continue-empty">
+            <div class="empty-icon">📖</div>
+            <p>कोई पढ़ाई नहीं मिली</p>
+            <p class="empty-sub">पाठ शुरू करें और यहाँ जारी रखें!</p>
           </div>
         `;
       }
     } catch (error) {
-      console.log('Continue reading error:', error);
       container.innerHTML = `
-        <div style="grid-column: 1 / -1; text-align: center; padding: var(--space-8); color: var(--text-muted);">
-          <p>📖 पाठ शुरू करें!</p>
+        <div class="continue-empty">
+          <div class="empty-icon">📖</div>
+          <p>पाठ शुरू करें!</p>
         </div>
       `;
     }
