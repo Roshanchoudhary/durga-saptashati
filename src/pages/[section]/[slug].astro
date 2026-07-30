@@ -29,15 +29,15 @@ export async function getStaticPaths() {
 const { item, allItems } = Astro.props;
 const { data, collection, slug } = item;
 
-// Import Content using dynamic import
-const { default: Content } = await import(`../../content/${collection}/${slug}.md?astro`);
-
 // Find prev/next
 const sectionItems = allItems.filter(i => i.collection === collection);
 const sorted = sectionItems.sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
 const index = sorted.findIndex(i => i.slug === slug);
 const prev = index > 0 ? sorted[index - 1] : null;
 const next = index < sorted.length - 1 ? sorted[index + 1] : null;
+
+// Render content
+const Content = await item.render();
 ---
 
 <ReaderLayout 
