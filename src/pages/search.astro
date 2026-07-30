@@ -2,81 +2,337 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="खोज">
-  <section class="section">
+<BaseLayout title="🔍 खोज">
+  <section class="section" style="padding-top: var(--space-8);">
     <div class="container">
-      <div class="section-header text-center">
+      <div class="section-header" style="text-align: center; max-width: 600px; margin: 0 auto var(--space-8);">
         <h2>🔍 खोज</h2>
         <p>दुर्गा सप्तशती में कुछ खोजें</p>
       </div>
       
       <div class="search-wrapper">
-        <input 
-          type="text" 
-          id="searchInput" 
-          class="search-input" 
-          placeholder="जैसे: दुर्गा, कवच, अध्याय 1..."
-          autocomplete="off"
-        />
-        <div id="searchResults" class="search-results"></div>
+        <div class="search-input-wrapper">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="searchInput" 
+            class="search-input" 
+            placeholder="जैसे: दुर्गा, कवच, अध्याय 1, श्लोक..."
+            autocomplete="off"
+          />
+          <button class="search-clear" id="searchClear" aria-label="Clear search">✕</button>
+        </div>
+        <div id="searchResults" class="search-results">
+          <div class="search-placeholder">
+            <p>🔍 कुछ खोजें...</p>
+            <p style="font-size: var(--font-size-small); color: var(--text-muted);">
+              उदाहरण: दुर्गा, कवच, महिषासुर, श्लोक
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 </BaseLayout>
 
-<script is:inline>
-  // Load Pagefind
-  let pagefind;
-  
-  async function loadPagefind() {
-    try {
-      const res = await fetch('/pagefind/pagefind.js');
-      if (!res.ok) return;
-      eval(await res.text());
-      pagefind = await window.pagefind();
-    } catch (e) {
-      console.log('Search not available');
-    }
+<style is:global>
+  .search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
   }
   
-  const input = document.getElementById('searchInput');
-  const results = document.getElementById('searchResults');
+  .search-icon {
+    position: absolute;
+    left: var(--space-4);
+    color: var(--text-muted);
+    font-size: var(--font-size-medium);
+  }
   
-  let debounceTimer;
-  input?.addEventListener('input', async (e) => {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(async () => {
-      const query = e.target.value.trim();
-      
-      if (query.length < 2) {
-        results.innerHTML = '';
+  .search-input {
+    width: 100%;
+    padding: var(--space-4) var(--space-12) var(--space-4) var(--space-10);
+    font-family: var(--font-base);
+    font-size: var(--font-size-medium);
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-light);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-fast);
+    color: var(--text-primary);
+  }
+  .search-input:focus {
+    outline: none;
+    border-color: var(--accent-orange);
+    box-shadow: 0 0 0 4px rgba(192, 57, 43, 0.08);
+  }
+  .search-input::placeholder {
+    color: var(--text-light);
+  }
+  
+  .search-clear {
+    position: absolute;
+    right: var(--space-3);
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    font-size: var(--font-size-medium);
+    cursor: pointer;
+    padding: var(--space-2);
+    border-radius: var(--radius-sm);
+    display: none;
+    transition: all var(--transition-fast);
+  }
+  .search-clear:hover {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+  }
+  .search-clear.visible {
+    display: block;
+  }
+  
+  .search-placeholder {
+    text-align: center;
+    padding: var(--space-12) var(--space-4);
+    color: var(--text-muted);
+  }
+  .search-placeholder p:first-child {
+    font-size: var(--font-size-xl);
+    margin-bottom: var(--space-2);
+  }
+  
+  .search-results {
+    margin-top: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  
+  .search-result {
+    display: block;
+    padding: var(--space-4) var(--space-6);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-light);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+  }
+  .search-result:hover {
+    border-color: var(--accent-orange);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  .search-result h3 {
+    color: var(--text-primary);
+    font-size: var(--font-size-medium);
+    font-weight: 600;
+    margin-bottom: var(--space-1);
+  }
+  .search-result p {
+    color: var(--text-secondary);
+    font-size: var(--font-size-small);
+    margin-top: var(--space-1);
+  }
+  .search-result .meta {
+    color: var(--accent-orange);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: var(--letter-spacing-wider);
+    margin-top: var(--space-2);
+    display: inline-block;
+    padding: var(--space-1) var(--space-2);
+    background: rgba(192, 57, 43, 0.06);
+    border-radius: var(--radius-sm);
+  }
+  
+  .search-loading {
+    text-align: center;
+    padding: var(--space-8);
+    color: var(--text-muted);
+  }
+  
+  .search-error {
+    text-align: center;
+    padding: var(--space-8);
+    color: var(--text-muted);
+  }
+</style>
+
+<script is:inline>
+  document.addEventListener('DOMContentLoaded', function() {
+    const input = document.getElementById('searchInput');
+    const results = document.getElementById('searchResults');
+    const clearBtn = document.getElementById('searchClear');
+    
+    if (!input || !results) return;
+    
+    let pagefind = null;
+    let searchTimeout = null;
+    
+    // ===== LOAD PAGEFIND =====
+    async function loadPagefind() {
+      try {
+        const res = await fetch('/pagefind/pagefind.js');
+        if (!res.ok) throw new Error('Pagefind not available');
+        
+        // Execute the script
+        await eval(await res.text());
+        pagefind = await window.pagefind();
+        return true;
+      } catch (e) {
+        console.log('Search not available:', e);
+        return false;
+      }
+    }
+    
+    // ===== PERFORM SEARCH =====
+    async function performSearch(query) {
+      if (!query || query.length < 2) {
+        results.innerHTML = `
+          <div class="search-placeholder">
+            <p>🔍 कुछ खोजें...</p>
+            <p style="font-size: var(--font-size-small); color: var(--text-muted);">
+              उदाहरण: दुर्गा, कवच, महिषासुर, श्लोक
+            </p>
+          </div>
+        `;
         return;
       }
       
-      if (!pagefind) await loadPagefind();
+      // Show loading
+      results.innerHTML = `<div class="search-loading">⏳ खोज हो रही है...</div>`;
+      
+      // Load pagefind if not loaded
+      if (!pagefind) {
+        const loaded = await loadPagefind();
+        if (!loaded) {
+          results.innerHTML = `
+            <div class="search-error">
+              <p>🔴 खोज सुविधा उपलब्ध नहीं है</p>
+              <p style="font-size: var(--font-size-small); color: var(--text-muted);">कृपया पुनः प्रयास करें</p>
+            </div>
+          `;
+          return;
+        }
+      }
       
       try {
         const search = await pagefind.search(query);
-        if (!search.results.length) {
-          results.innerHTML = '<p class="text-center" style="color: var(--color-gray-500); padding: var(--spacing-8);">कोई परिणाम नहीं मिला</p>';
+        
+        if (!search.results || search.results.length === 0) {
+          results.innerHTML = `
+            <div class="search-placeholder">
+              <p>😕 कोई परिणाम नहीं मिला</p>
+              <p style="font-size: var(--font-size-small); color: var(--text-muted);">
+                "${query}" के लिए कुछ नहीं मिला। दूसरे शब्दों में खोजें।
+              </p>
+            </div>
+          `;
           return;
         }
         
         let html = '';
-        for (const result of search.results.slice(0, 15)) {
+        const limit = Math.min(search.results.length, 20);
+        
+        for (let i = 0; i < limit; i++) {
+          const result = search.results[i];
           const data = await result.data();
+          
+          // Extract category from URL
+          const urlParts = data.url.split('/');
+          const category = urlParts[1] || '';
+          const categoryLabels = {
+            'before-reading': '📚 पढ़ने से पहले',
+            'chapters': '🕉️ अध्याय',
+            'after-reading': '🙏 पढ़ने के बाद',
+            'articles': '📝 लेख'
+          };
+          const categoryLabel = categoryLabels[category] || category;
+          
           html += `
             <a href="${data.url}" class="search-result">
               <h3>${data.meta.title}</h3>
               ${data.meta.description ? `<p>${data.meta.description}</p>` : ''}
-              <div class="meta">${data.meta.category || ''}</div>
+              <span class="meta">${categoryLabel}</span>
             </a>
           `;
         }
-        results.innerHTML = html;
+        
+        // Show count
+        const total = search.results.length;
+        const countText = total > limit ? `${limit} of ${total}` : total;
+        
+        results.innerHTML = `
+          <div style="font-size: var(--font-size-small); color: var(--text-muted); padding: 0 var(--space-2) var(--space-2);">
+            ${countText} परिणाम मिले
+          </div>
+          ${html}
+        `;
+        
       } catch (e) {
         console.error('Search error:', e);
+        results.innerHTML = `
+          <div class="search-error">
+            <p>🔴 खोज में त्रुटि हुई</p>
+            <p style="font-size: var(--font-size-small); color: var(--text-muted);">कृपया पुनः प्रयास करें</p>
+          </div>
+        `;
       }
-    }, 300);
+    }
+    
+    // ===== INPUT HANDLER =====
+    input.addEventListener('input', function(e) {
+      const query = e.target.value.trim();
+      
+      // Show/hide clear button
+      if (clearBtn) {
+        clearBtn.classList.toggle('visible', query.length > 0);
+      }
+      
+      // Debounce search
+      clearTimeout(searchTimeout);
+      searchTimeout = setTimeout(() => {
+        performSearch(query);
+      }, 300);
+    });
+    
+    // ===== CLEAR BUTTON =====
+    clearBtn?.addEventListener('click', function() {
+      input.value = '';
+      clearBtn.classList.remove('visible');
+      results.innerHTML = `
+        <div class="search-placeholder">
+          <p>🔍 कुछ खोजें...</p>
+          <p style="font-size: var(--font-size-small); color: var(--text-muted);">
+            उदाहरण: दुर्गा, कवच, महिषासुर, श्लोक
+          </p>
+        </div>
+      `;
+      input.focus();
+    });
+    
+    // ===== KEYBOARD SHORTCUT =====
+    document.addEventListener('keydown', function(e) {
+      // Ctrl+K or Cmd+K to focus search
+      if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+        e.preventDefault();
+        input.focus();
+        input.select();
+      }
+      // Escape to clear search
+      if (e.key === 'Escape' && document.activeElement === input) {
+        clearBtn?.click();
+        input.blur();
+      }
+    });
+    
+    // ===== LOAD PAGEFIND ON FIRST FOCUS =====
+    let loaded = false;
+    input.addEventListener('focus', async function() {
+      if (!loaded) {
+        loaded = true;
+        await loadPagefind();
+      }
+    });
   });
 </script>
