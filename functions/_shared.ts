@@ -6,7 +6,7 @@ export async function sha256(s:string) {
 }
 export async function pbkdf2(password:string,salt:string) {
   const k=await crypto.subtle.importKey("raw",new TextEncoder().encode(password),"PBKDF2",false,["deriveBits"]);
-  const b=await crypto.subtle.deriveBits({name:"PBKDF2",salt:new TextEncoder().encode(salt),iterations:210000,hash:"SHA-256"},k,256);
+  const b=await crypto.subtle.deriveBits({name:"PBKDF2",salt:new TextEncoder().encode(salt),iterations:100000,hash:"SHA-256"},k,256);
   return btoa(String.fromCharCode(...new Uint8Array(b)));
 }
 export function json(data:unknown,status=200,headers:HeadersInit={}) {
