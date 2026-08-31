@@ -5,7 +5,7 @@ compatibility_date = "2026-08-31"
 [[d1_databases]]
 binding = "DB"
 database_name = "durgasaptashati"
-database_id = "YOUR-D1-DATABASE-ID"
+database_id = "ad9e0e8d-3608-42f3-9ad5-c173ad20b44e"
 
 # Production recommendation:
 # Protect /admin and POST /api/chapter with Cloudflare Access or Worker authentication.
