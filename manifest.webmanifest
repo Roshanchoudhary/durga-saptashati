@@ -1,0 +1,9 @@
+{
+  "name": "दुर्गा सप्तशती",
+  "short_name": "दुर्गा सप्तशती",
+  "start_url": "/",
+  "display": "standalone",
+  "lang": "hi",
+  "theme_color": "#8b1e1e",
+  "background_color": "#fffaf5"
+}
