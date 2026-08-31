@@ -1,0 +1,8 @@
+const API="https://durga-saptashati.roshanchoudhary.workers.dev";
+const form=document.getElementById("setup"),msg=document.getElementById("msg");
+form.addEventListener("submit",async e=>{e.preventDefault();const p=document.getElementById("password").value,c=document.getElementById("confirm").value;
+if(p!==c){msg.textContent="Password और Confirm Password अलग हैं।";return}
+if(p.length<10){msg.textContent="Password कम से कम 10 अक्षर का रखें।";return}
+msg.textContent="Admin बनाया जा रहा है…";
+try{const r=await fetch(API+"/api/admin/setup",{method:"POST",headers:{"content-type":"application/json"},credentials:"include",body:JSON.stringify({username:document.getElementById("username").value.trim(),email:document.getElementById("email").value.trim(),password:p})});
+const x=await r.json();if(r.ok){msg.textContent="✓ Admin बन गया। Login page पर जा रहे हैं…";setTimeout(()=>location.href="/admin/login.html",700)}else msg.textContent="✕ "+(x.error||"Setup failed")}catch(e){msg.textContent="✕ Worker से connection नहीं हुआ।"}});
