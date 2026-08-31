@@ -4,7 +4,7 @@
 - `index.html`: homepage
 - `chapter.html?id=...`: ONE common chapter template
 - `stotra.html?id=...`: ONE common stotra template
-- Admin Word-like rich editor for Sanskrit + Hindi
+- Admin Word-like single rich editor for Sanskrit + Hindi in one content field
 - Reader controls: speech, stop, font size, dark mode, copy, share, bookmark
 - Previous / chapter list / next navigation above and below
 - Cloudflare Worker + D1 schema/API
