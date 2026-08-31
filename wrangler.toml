@@ -1,0 +1,7 @@
+name = "durgasaptashati"
+compatibility_date = "2026-08-31"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "durgasaptashati"
+database_id = "ad9e0e8d-3608-42f3-9ad5-c173ad20b44e"
