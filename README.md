@@ -16,3 +16,7 @@ Cloudflare Pages serves the public static files. Cloudflare Worker handles `/api
 Run `api/schema.sql` in D1. Create the first admin using `api/create-admin.mjs` and insert its generated SQL into D1.
 
 Do not expose an unauthenticated POST API. Do not rely on JavaScript-only login for security.
+
+
+## Login-first
+Opening `/admin/` or `/admin/index.html` checks the server-side session immediately and redirects unauthenticated users to `/admin/login.html`. The dashboard is not intentionally exposed before login. The Worker remains the actual security boundary and protects the write API.
