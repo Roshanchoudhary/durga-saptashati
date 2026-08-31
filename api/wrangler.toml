@@ -1,0 +1,11 @@
+name = "durgasaptashati-api"
+main = "worker.js"
+compatibility_date = "2026-08-31"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "durgasaptashati"
+database_id = "YOUR-D1-DATABASE-ID"
+
+# Production recommendation:
+# Protect /admin and POST /api/chapter with Cloudflare Access or Worker authentication.
