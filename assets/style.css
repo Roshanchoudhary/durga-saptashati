@@ -29,7 +29,7 @@
 .post-cover{margin-bottom:20px;border-radius:18px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--shadow)}
 .post-cover img{display:block;width:100%;max-height:430px;object-fit:cover}
 .subtitle{color:var(--muted);font-size:18px}
-.reading .sanskrit-text{display:block;font-family:"Noto Serif Devanagari","Nirmala UI",serif;font-weight:600;line-height:1.95;margin:18px 0;padding:12px 14px;border-radius:12px}
+.reading .sanskrit-text{display:block;font-family:"Noto Serif Devanagari","Nirmala UI",serif;font-weight:600;line-height:1.95;margin:18px 0;padding:20px 18px;border-radius:14px;background:#fff4cf;border:1px solid #f0dfab;box-shadow:0 4px 14px rgba(80,55,20,.06)}
 .reading .hindi-text{display:block;font-family:"Noto Sans Devanagari","Nirmala UI",sans-serif;background:#f0f3f6;color:#31383d;line-height:1.9;margin:18px 0;padding:16px 18px;border-radius:12px}
 .reading .tone-a,.reading .marker-part.tone-a{color:#9b1c1c}
 .reading .tone-b,.reading .marker-part.tone-b{color:#246b32}
@@ -46,3 +46,11 @@
 .navrow-bottom{margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}
 .navrow .nav-name{display:inline-block;max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle}
 @media(max-width:520px){.navrow .nav-name{max-width:125px}.navrow a{min-width:0;flex:1}}
+
+.reading .sanskrit-text [data-pada]{background:transparent}
+.reading .sanskrit-text .tone-a{color:#9b1c1c}
+.reading .sanskrit-text .tone-b{color:#246b32}
+.reading .sanskrit-text .marker-part{background:transparent}
+.reading .hindi-text{background:#eef2f5;border:1px solid #dfe5e9}
+
+.editor-help{margin:10px 0;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fffaf0;color:var(--muted);font-size:13px}
