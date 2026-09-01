@@ -80,3 +80,52 @@
 .admin .editable .editor-font-size-7,.admin .editable font[size="7"]{font-size:34px!important}
 .admin .toolbar select{min-width:78px}
 @media(max-width:520px){.admin .toolbar{max-height:none}.admin .toolbar button,.admin .toolbar select{font-size:13px;padding:7px 8px}.admin .editable{min-height:480px}}
+
+/* TTS: the currently spoken word is enlarged without changing its Sanskrit tone */
+.reading .tts-token {
+  display: inline;
+  transition: transform .16s ease, background-color .16s ease, box-shadow .16s ease, font-size .16s ease;
+}
+.reading .tts-token.tts-current {
+  display: inline-block;
+  transform: scale(1.14);
+  transform-origin: center;
+  background: rgba(255, 214, 92, .42);
+  border-radius: .28em;
+  padding: .02em .14em;
+  margin: 0 .04em;
+  box-shadow: 0 0 0 .08em rgba(255, 190, 45, .14);
+  z-index: 2;
+}
+.reading .tone-a.tts-current { color: #9b1c1c; }
+.reading .tone-b.tts-current { color: #246b32; }
+@media (prefers-reduced-motion: reduce) {
+  .reading .tts-token.tts-current { transform:none; }
+}
+
+/* Professional synchronized TTS focus */
+.reading .tts-token{
+  display:inline;
+  transition:transform .18s ease,background-color .18s ease,box-shadow .18s ease;
+  -webkit-box-decoration-break:clone;
+  box-decoration-break:clone;
+}
+.reading .tts-token.tts-current{
+  display:inline-block;
+  transform:scale(var(--tts-scale,1.16));
+  transform-origin:center;
+  background:rgba(255,208,72,.45);
+  border-radius:.3em;
+  padding:.04em .14em;
+  margin:0 .05em;
+  box-shadow:0 0 0 .08em rgba(255,190,45,.12);
+  position:relative;
+  z-index:3;
+}
+.reading .tts-token.tts-current.tone-a,
+.reading .marker-part.tone-a .tts-token.tts-current{color:#9b1c1c}
+.reading .tts-token.tts-current.tone-b,
+.reading .marker-part.tone-b .tts-token.tts-current{color:#246b32}
+@media(prefers-reduced-motion:reduce){
+ .reading .tts-token.tts-current{transform:none}
+}
