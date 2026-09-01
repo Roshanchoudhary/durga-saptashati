@@ -36,3 +36,9 @@
 .marker-btn{font-weight:800!important}
 @media(max-width:820px){.content-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:520px){.content-grid{grid-template-columns:1fr}.card-image{height:200px}.reading .sanskrit-text{padding:10px 8px}.post-cover img{max-height:320px}}
+
+/* Admin editor previews */
+.editable .sanskrit-text{display:block;font-family:"Noto Serif Devanagari","Nirmala UI",serif;font-size:1.35em;font-weight:650;line-height:1.9;padding:10px 12px;margin:10px 0;border-radius:10px;background:#fff8e8}
+.editable .hindi-text{display:block;font-family:"Noto Sans Devanagari","Nirmala UI",sans-serif;background:#f0f3f6;color:#31383d;padding:12px 14px;margin:10px 0;border-radius:10px;line-height:1.85}
+.editable .tone-a,.editable .marker-part.tone-a{color:#9b1c1c}.editable .tone-b,.editable .marker-part.tone-b{color:#246b32}
+.marker-btn{background:#fff4d8!important}

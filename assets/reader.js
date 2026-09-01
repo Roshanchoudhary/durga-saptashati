@@ -4,10 +4,21 @@
  const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
  const href=(s,u)=>{const a=q(s);if(!a)return;if(u){a.href=u;a.removeAttribute("aria-disabled")}else{a.removeAttribute("href");a.setAttribute("aria-disabled","true")}};
  function size(){if(content)content.style.fontSize=fs+"px"}
- function markers(root){
-   root.querySelectorAll(".sanskrit-text").forEach(el=>{
-     if(el.dataset.chhand==="anushtubh")return;
-     el.innerHTML=el.innerHTML.split("~").map((x,i)=>`<span class="marker-part ${i%2?"tone-b":"tone-a"}">${x}</span>`).join("");
+ function applyMarkerColors(root){
+   // ~ is an admin-only marker. It is never rendered.
+   // Walk text nodes so existing HTML formatting is preserved.
+   const nodes=[];const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);
+   let n;while(n=w.nextNode()) if(n.nodeValue && n.nodeValue.includes("~")) nodes.push(n);
+   let tone=0;
+   nodes.forEach(node=>{
+     const parts=node.nodeValue.split("~");
+     if(parts.length<2)return;
+     const frag=document.createDocumentFragment();
+     parts.forEach((part,i)=>{
+       if(part){const sp=document.createElement("span");sp.className=tone%2?"marker-part tone-b":"marker-part tone-a";sp.textContent=part;frag.appendChild(sp)}
+       if(i<parts.length-1)tone++;
+     });
+     node.parentNode.replaceChild(frag,node);
    });
  }
  function anushtubh(root){
@@ -22,7 +33,7 @@
    document.title=(x.title||"दुर्गा सप्तशती")+" | दुर्गा सप्तशती";
    head.innerHTML=`${x.image_url?`<div class="post-cover"><img src="${esc(x.image_url)}" alt="${esc(x.title)}"></div>`:""}<div class="eyebrow">${esc(x.content_type||"देवी उपासना")}</div><h1>${esc(x.title)}</h1>${x.subtitle?`<p class="subtitle">${esc(x.subtitle)}</p>`:""}`;
    content.innerHTML=x.content_html||"<div class='notice'>इस पोस्ट में अभी सामग्री नहीं है।</div>";
-   markers(content);anushtubh(content);size();
+   applyMarkerColors(content);anushtubh(content);size();
    href("#prev",x.prev?"/chapter.html?id="+encodeURIComponent(x.prev):null);href("#next",x.next?"/chapter.html?id="+encodeURIComponent(x.next):null);
    const bm="bookmark:"+id;if(localStorage.getItem(bm))q("#bookmark").textContent="🔖 सुरक्षित";
    q("#bookmark")?.addEventListener("click",()=>{localStorage.setItem(bm,"1");q("#bookmark").textContent="🔖 सुरक्षित"});
