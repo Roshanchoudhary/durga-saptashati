@@ -54,3 +54,29 @@
 .reading .hindi-text{background:#eef2f5;border:1px solid #dfe5e9}
 
 .editor-help{margin:10px 0;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fffaf0;color:var(--muted);font-size:13px}
+
+/* Professional admin editor + TTS reading */
+.admin .editor{position:relative;overflow:visible}
+.admin .toolbar{position:sticky;top:0;z-index:60;box-shadow:0 4px 14px rgba(70,30,10,.06);backdrop-filter:blur(10px)}
+.admin .editable{font-size:20px;min-height:420px;max-height:none;overflow:visible;white-space:pre-wrap;word-break:normal;overflow-wrap:anywhere}
+.admin .editable:focus{box-shadow:inset 0 0 0 2px rgba(139,30,30,.10)}
+.admin .editable [size="1"],.admin .editable [size="2"]{font-size:15px!important}
+.admin .editable [size="3"]{font-size:20px!important}
+.admin .editable [size="4"]{font-size:22px!important}
+.admin .editable [size="5"]{font-size:25px!important}
+.admin .editable [size="6"],.admin .editable [size="7"]{font-size:30px!important}
+.speak-status{font-size:12px;color:var(--brand2);font-weight:750;min-height:20px;display:inline-flex;align-items:center;padding:0 3px}
+.tts-word{display:inline-block;transition:transform .12s ease,background-color .12s ease,box-shadow .12s ease;border-radius:5px}
+.tts-current-word{transform:scale(1.16);transform-origin:center;position:relative;z-index:3;padding:0 .08em;background:#ffe49a;box-shadow:0 2px 12px rgba(130,80,10,.18);text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px}
+.reading .tts-current-word{color:inherit!important}
+@media(max-width:520px){.admin .toolbar{top:0}.admin .editable{font-size:19px}.speak-status{width:100%;justify-content:center;order:10}.tts-current-word{transform:scale(1.10)}}
+/* Stable editor sizing: browser-generated <font size> values map to fixed sizes. */
+.admin .editable .editor-font-size-1,.admin .editable font[size="1"]{font-size:15px!important}
+.admin .editable .editor-font-size-2,.admin .editable font[size="2"]{font-size:17px!important}
+.admin .editable .editor-font-size-3,.admin .editable font[size="3"]{font-size:20px!important}
+.admin .editable .editor-font-size-4,.admin .editable font[size="4"]{font-size:23px!important}
+.admin .editable .editor-font-size-5,.admin .editable font[size="5"]{font-size:26px!important}
+.admin .editable .editor-font-size-6,.admin .editable font[size="6"]{font-size:30px!important}
+.admin .editable .editor-font-size-7,.admin .editable font[size="7"]{font-size:34px!important}
+.admin .toolbar select{min-width:78px}
+@media(max-width:520px){.admin .toolbar{max-height:none}.admin .toolbar button,.admin .toolbar select{font-size:13px;padding:7px 8px}.admin .editable{min-height:480px}}
