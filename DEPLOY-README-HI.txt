@@ -1,19 +1,14 @@
-FINAL SETUP — Cloudflare Pages + Pages Functions + D1
+FINAL: Pages + Pages Functions + existing D1 durgasaptashati
 
-Project: durgasaptashati
-D1: durgasaptashati
-D1 ID: ad9e0e8d-3608-42f3-9ad5-c173ad20b44e
-Binding: DB
+मुख्य बदलाव:
+- Home पर केवल विषय सूची।
+- देवी उपासना/प्रमुख स्तोत्र के अलग sections नहीं।
+- Admin से सभी सामग्री एक ही विषय सूची में।
+- Image URL: विषय सूची और post दोनों में।
+- एक editor में Sanskrit + Hindi।
+- Sanskrit ~ marker invisible; marker पर रंग बदलता है।
+- Anushtubh helper: चार पाद अलग-अलग line में select करें → A-B-B-A।
+- पाठ सुनें, रोकें, A-/A+, Copy, Share, Bookmark।
+- Duplicate navigation हटाया गया।
 
-इस version में /api/* Pages Functions से चलता है। अलग Worker deploy करने की जरूरत नहीं है।
-
-GitHub repository की ROOT में files replace करें।
-Cloudflare Pages project उसी repository से deploy करें।
-Build command: खाली
-Build output directory: repository root / empty
-
-Deploy के बाद:
-https://durgasaptashati.pages.dev/admin/setup.html
-
-पहला Admin browser से बनाएँ। Admin बनने के बाद setup बंद हो जाएगा।
-फिर /admin/login.html से login करें।
+D1 में image_url/content_type/sort_order columns नहीं हों तो migrations/0002_content_fields.sql केवल एक बार चलाएँ।
