@@ -1,5 +1,16 @@
 export interface Env { DB: D1Database }
 
+export async function ensureContentColumns(db:D1Database){
+  const cols=[
+    ["image_url","TEXT DEFAULT ''"],
+    ["content_type","TEXT DEFAULT 'content'"],
+    ["sort_order","INTEGER DEFAULT 0"]
+  ];
+  for(const [name,def] of cols){
+    try{ await db.prepare(`ALTER TABLE chapters ADD COLUMN ${name} ${def}`).run(); }catch{}
+  }
+}
+
 export async function sha256(s:string) {
   const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(s));
   return [...new Uint8Array(b)].map(x=>x.toString(16).padStart(2,"0")).join("");
