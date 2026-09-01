@@ -42,3 +42,7 @@
 .editable .hindi-text{display:block;font-family:"Noto Sans Devanagari","Nirmala UI",sans-serif;background:#f0f3f6;color:#31383d;padding:12px 14px;margin:10px 0;border-radius:10px;line-height:1.85}
 .editable .tone-a,.editable .marker-part.tone-a{color:#9b1c1c}.editable .tone-b,.editable .marker-part.tone-b{color:#246b32}
 .marker-btn{background:#fff4d8!important}
+
+.navrow-bottom{margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}
+.navrow .nav-name{display:inline-block;max-width:300px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;vertical-align:middle}
+@media(max-width:520px){.navrow .nav-name{max-width:125px}.navrow a{min-width:0;flex:1}}

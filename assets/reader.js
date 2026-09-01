@@ -1,5 +1,6 @@
 (()=> {
- const q=s=>document.querySelector(s), params=new URLSearchParams(location.search), id=params.get("id");
+ const q=s=>document.querySelector(s), params=new URLSearchParams(location.search);
+ const id=params.get("id"), slug=params.get("slug")||decodeURIComponent(location.pathname.replace(/^\/+|\/+$/g,""));
  const head=q("#head"),content=q("#content");let fs=Number(localStorage.getItem("ds-font-size")||22);
  const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
  const href=(s,u)=>{const a=q(s);if(!a)return;if(u){a.href=u;a.removeAttribute("aria-disabled")}else{a.removeAttribute("href");a.setAttribute("aria-disabled","true")}};
@@ -29,12 +30,16 @@
  }
  async function load(){
   try{
-   const r=await fetch("/api/chapter?id="+encodeURIComponent(id),{cache:"no-store"}),x=await r.json();if(!r.ok)throw 0;
+   const key=id?("id="+encodeURIComponent(id)):("slug="+encodeURIComponent(slug));
+   const r=await fetch("/api/chapter?"+key,{cache:"no-store"}),x=await r.json();if(!r.ok)throw 0;
    document.title=(x.title||"दुर्गा सप्तशती")+" | दुर्गा सप्तशती";
    head.innerHTML=`${x.image_url?`<div class="post-cover"><img src="${esc(x.image_url)}" alt="${esc(x.title)}"></div>`:""}<div class="eyebrow">${esc(x.content_type||"देवी उपासना")}</div><h1>${esc(x.title)}</h1>${x.subtitle?`<p class="subtitle">${esc(x.subtitle)}</p>`:""}`;
    content.innerHTML=x.content_html||"<div class='notice'>इस पोस्ट में अभी सामग्री नहीं है।</div>";
    applyMarkerColors(content);anushtubh(content);size();
-   href("#prev",x.prev?"/chapter.html?id="+encodeURIComponent(x.prev):null);href("#next",x.next?"/chapter.html?id="+encodeURIComponent(x.next):null);
+   const prevUrl=x.prev_slug?"/"+encodeURIComponent(x.prev_slug):(x.prev?"/chapter.html?id="+encodeURIComponent(x.prev):null);
+   const nextUrl=x.next_slug?"/"+encodeURIComponent(x.next_slug):(x.next?"/chapter.html?id="+encodeURIComponent(x.next):null);
+   ["#prev","#prevBottom"].forEach(sel=>{href(sel,prevUrl);const n=q(sel+" .nav-name");if(n)n.textContent=x.prev_title||"पिछला"});
+   ["#next","#nextBottom"].forEach(sel=>{href(sel,nextUrl);const n=q(sel+" .nav-name");if(n)n.textContent=x.next_title||"अगला"});
    const bm="bookmark:"+id;if(localStorage.getItem(bm))q("#bookmark").textContent="🔖 सुरक्षित";
    q("#bookmark")?.addEventListener("click",()=>{localStorage.setItem(bm,"1");q("#bookmark").textContent="🔖 सुरक्षित"});
    q("#copy")?.addEventListener("click",async()=>{await navigator.clipboard?.writeText(content.innerText);q("#copy").textContent="✓ Copied";setTimeout(()=>q("#copy").textContent="📋 Copy",1200)});
