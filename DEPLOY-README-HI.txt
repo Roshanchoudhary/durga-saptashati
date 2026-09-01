@@ -1,7 +1,14 @@
-FINAL v3 — PHOTO + MARKER FIX
+FINAL v4 — CLEAN URL + NAMED PREVIOUS/NEXT NAVIGATION
 
-इस version में API पहले chapters की नई columns (image_url, content_type, sort_order) मौजूद हैं या नहीं जाँचता है और missing होने पर अपने-आप बनाता है। इसलिए photo URL save करने के लिए अलग migration चलाना जरूरी नहीं होना चाहिए।
+अब पोस्ट URL:
+https://durga-saptashati.pages.dev/<slug>
+उदाहरण:
+https://durga-saptashati.pages.dev/shri-durgashtottarshatanama-stotram
 
-Reader में ~ invisible marker अब पूरे article के text nodes पर काम करता है; existing HTML tags टूटेंगे नहीं। ~ पर रंग A/B बदलता है। Anushtubh block में A-B-B-A रखा गया है।
+Admin में URL Slug field है। यही clean URL बनेगा।
+पुराना /chapter.html?id=UUID API compatibility के लिए रखा गया है।
 
-Deploy करने के बाद Cloudflare Pages का नया deployment पूरा होने दें और browser में hard refresh करें (Ctrl+F5)।
+ऊपर पोस्ट के पहले और पोस्ट के नीचे दोनों जगह:
+← <पिछले पोस्ट का नाम>   |   विषय सूची   |   <अगले पोस्ट का नाम> →
+
+D1 में slug/image_url/content_type/sort_order fields के लिए existing ensureContentColumns रखा गया है।
