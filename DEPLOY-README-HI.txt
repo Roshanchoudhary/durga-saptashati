@@ -1,14 +1,7 @@
-FINAL: Pages + Pages Functions + existing D1 durgasaptashati
+FINAL v3 — PHOTO + MARKER FIX
 
-मुख्य बदलाव:
-- Home पर केवल विषय सूची।
-- देवी उपासना/प्रमुख स्तोत्र के अलग sections नहीं।
-- Admin से सभी सामग्री एक ही विषय सूची में।
-- Image URL: विषय सूची और post दोनों में।
-- एक editor में Sanskrit + Hindi।
-- Sanskrit ~ marker invisible; marker पर रंग बदलता है।
-- Anushtubh helper: चार पाद अलग-अलग line में select करें → A-B-B-A।
-- पाठ सुनें, रोकें, A-/A+, Copy, Share, Bookmark।
-- Duplicate navigation हटाया गया।
+इस version में API पहले chapters की नई columns (image_url, content_type, sort_order) मौजूद हैं या नहीं जाँचता है और missing होने पर अपने-आप बनाता है। इसलिए photo URL save करने के लिए अलग migration चलाना जरूरी नहीं होना चाहिए।
 
-D1 में image_url/content_type/sort_order columns नहीं हों तो migrations/0002_content_fields.sql केवल एक बार चलाएँ।
+Reader में ~ invisible marker अब पूरे article के text nodes पर काम करता है; existing HTML tags टूटेंगे नहीं। ~ पर रंग A/B बदलता है। Anushtubh block में A-B-B-A रखा गया है।
+
+Deploy करने के बाद Cloudflare Pages का नया deployment पूरा होने दें और browser में hard refresh करें (Ctrl+F5)।
