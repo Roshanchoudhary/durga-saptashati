@@ -1,5 +1,6 @@
 async function auth(){const r=await fetch("/api/admin/me",{credentials:"include",cache:"no-store"});if(!r.ok){location.replace("/admin/login.html");return false}document.getElementById("panel").hidden=false;document.getElementById("authMsg").hidden=true;return true}
 const $=x=>document.getElementById(x);let range=null;
+function refreshMarkerPreview(){ /* keep ~ in editor so it remains editable; CSS is applied by marker helper only after publish */ }
 function remember(){const s=getSelection();if(s&&s.rangeCount)range=s.getRangeAt(0).cloneRange()}
 $("content")?.addEventListener("mouseup",remember);$("content")?.addEventListener("keyup",remember);
 document.querySelectorAll(".toolbar").forEach(tb=>{tb.addEventListener("mousedown",e=>{if(e.target.closest("button"))e.preventDefault()});tb.querySelectorAll("button[data-cmd]").forEach(b=>b.onclick=()=>{const e=$(tb.dataset.target);e.focus();document.execCommand(b.dataset.cmd,false,b.dataset.value||null);remember()})});
