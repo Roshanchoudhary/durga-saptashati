@@ -6,10 +6,46 @@
  const esc=s=>String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
  const href=(s,u)=>{const a=q(s);if(!a)return;if(u){a.href=u;a.removeAttribute("aria-disabled")}else{a.removeAttribute("href");a.setAttribute("aria-disabled","true")}};
  function size(){if(content)content.style.fontSize=fs+"px"}
+ const VIRAMA="\u094D",ZWJ="\u200D",ZWNJ="\u200C",MARK=/\p{M}/u;
+ const isJoining=c=>c===VIRAMA||c===ZWJ||c===ZWNJ||MARK.test(c);
+ // Virama/ZWJ/ZWNJ bind to whatever follows them, so a cut may not be placed
+ // right after one; a matra or nukta already binds to its own base on the left.
+ const bindsRight=c=>c===VIRAMA||c===ZWJ||c===ZWNJ;
+ function isSafeCut(text,i){
+   if(i<=0||i>=text.length)return false;
+   if(isJoining(text[i])||bindsRight(text[i-1]))return false;
+   if(i>1&&(text[i-2]===ZWJ||text[i-2]===ZWNJ))return false;
+   return true;
+ }
+ // "~" only recolours text, it must never break a Devanagari cluster. Marks are
+ // removed first (a leftover virama would otherwise join across the new span
+ // edge), then every "~" is snapped back to the start of the cluster it sits in:
+ // "क्~षत्रिय" keeps one span and still renders as क्षत्रिय, not क् + षत्रिय.
+ function planSegments(raw,startTone){
+   const marks=[];let clean="";
+   for(let i=0;i<raw.length;i++){if(raw[i]==="~")marks.push(clean.length);else clean+=raw[i]}
+   const cuts=marks.map(m=>{
+     if(m>=clean.length)return clean.length;
+     if(isSafeCut(clean,m))return m;
+     for(let i=m;i>0;i--)if(isSafeCut(clean,i))return i;
+     return 0;
+   }).sort((a,b)=>a-b).filter((c,i,a)=>i===0||c!==a[i-1]);
+   const segs=[];let tone=startTone,prev=0;
+   cuts.forEach(cut=>{if(cut>prev)segs.push({text:clean.slice(prev,cut),tone:tone});tone=1-tone;prev=cut});
+   if(prev<clean.length)segs.push({text:clean.slice(prev),tone:tone});
+   return segs;
+ }
  function applyMarkerColors(root){
    const nodes=[];const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;
    while(n=w.nextNode())if(n.nodeValue&&n.nodeValue.includes("~"))nodes.push(n);
-   let tone=0;nodes.forEach(node=>{const parts=node.nodeValue.split("~");if(parts.length<2)return;const frag=document.createDocumentFragment();parts.forEach((part,i)=>{if(part){const sp=document.createElement("span");sp.className=tone%2?"marker-part tone-b":"marker-part tone-a";sp.textContent=part;frag.appendChild(sp)}if(i<parts.length-1)tone++});node.parentNode.replaceChild(frag,node)});
+   let tone=0;
+   nodes.forEach(node=>{
+     const segs=planSegments(node.nodeValue,tone);
+     if(segs.length)tone=1-segs[segs.length-1].tone;
+     const frag=document.createDocumentFragment();
+     segs.forEach(s=>{const sp=document.createElement("span");sp.className=s.tone?"marker-part tone-b":"marker-part tone-a";sp.textContent=s.text;frag.appendChild(sp)});
+     node.parentNode.replaceChild(frag,node);
+   });
  }
  function anushtubh(root){root.querySelectorAll('.sanskrit-text[data-chhand="anushtubh"]').forEach(el=>{const p=[...el.querySelectorAll("[data-pada]")];if(p.length===4)p.forEach((x,i)=>x.classList.add(i===0||i===3?"tone-a":"tone-b"))})}
  function makeSpeakableWords(root){
