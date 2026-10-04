@@ -55,6 +55,15 @@
 
 .editor-help{margin:10px 0;padding:9px 12px;border:1px solid var(--line);border-radius:10px;background:#fffaf0;color:var(--muted);font-size:13px}
 
+/* Exact "~" colouring: the verse stays one text run so conjuncts (क्ष, न्दु, क्त्र)
+   never break; the tone change is painted at the marker's exact pixel with one
+   gradient layer per line, clipped to the glyphs. */
+.tone-ink{display:block}
+.reading .tone-ink{color:transparent;-webkit-text-fill-color:transparent}
+.reading .tone-ink .tone-a,.reading .tone-ink .tone-b,.reading .tone-ink [data-pada]{color:inherit}
+.reading .tone-ink::selection{color:#1c1410;-webkit-text-fill-color:#1c1410;background:#bcd8ff}
+.reading .tone-ink .tts-current-word{color:#2a1a12!important;-webkit-text-fill-color:#2a1a12!important}
+
 /* Professional admin editor + TTS reading */
 .admin .editor{position:relative;overflow:visible}
 .admin .toolbar{position:sticky;top:0;z-index:60;box-shadow:0 4px 14px rgba(70,30,10,.06);backdrop-filter:blur(10px)}
