@@ -13,4 +13,11 @@
 <label for="homeSeoDescription">SEO Description</label><textarea id="homeSeoDescription" class="field" rows="3" placeholder="Google Search के लिए विवरण"></textarea><br><br>
 <label for="menuItemsSetting">मेनू लिंक (हर लाइन: नाम | URL)</label><textarea id="menuItemsSetting" class="field" rows="6" placeholder="होम | /&#10;विषय सूची | /#chapters&#10;दुर्गा सप्तश्लोकी | /durga-saptashloki"></textarea><br><br>
 <div class="row"><button id="saveSiteSettings" class="btn primary">💾 Homepage और Menu Save करें</button></div><p id="siteSettingsMsg" aria-live="polite"></p></div>
+<div class="admin-card"><h2>📈 AdSense, Analytics और Google Verification</h2>
+<p class="notice">यहाँ केवल ID/token डालें, पूरा JavaScript code नहीं। AdSense approval और विज्ञापन दिखना Google की मंज़ूरी पर निर्भर है।</p>
+<label for="adsensePublisherId">Google AdSense Publisher ID</label><input id="adsensePublisherId" class="field" placeholder="ca-pub-1234567890123456" autocomplete="off"><br><br>
+<label for="ga4MeasurementId">Google Analytics 4 Measurement ID</label><input id="ga4MeasurementId" class="field" placeholder="G-XXXXXXXXXX" autocomplete="off"><br><br>
+<label for="searchConsoleVerification">Google Search Console meta verification token</label><input id="searchConsoleVerification" class="field" placeholder="Google द्वारा दिए गए meta tag की content value" autocomplete="off"><br><br>
+<p class="notice">Sitemap XML पहले से /sitemap.xml पर dynamic है। AdSense ID भरने पर /ads.txt अपने-आप बनेगा।</p>
+<div class="row"><button id="saveGoogleSettings" class="btn primary">💾 Google Settings Save करें</button></div><p id="googleSettingsMsg" aria-live="polite"></p></div>
 <div class="admin-card"><h2>Published Chapters</h2><div id="items">लोड हो रहा है…</div></div></section></main><script src="/admin/admin.js"></script></body></html>
