@@ -18,8 +18,8 @@ export const onRequestPost:PagesFunction<Env>=async({request,env})=>{
   const x:any=await request.json();if(!x.id||!x.title)return json({error:"ID और नाम जरूरी हैं।"},400);
   const slug=String(x.slug||"").trim();
   if(slug){
-   const duplicate:any=await env.DB.prepare("SELECT id,title FROM chapters WHERE slug=? AND id<>? LIMIT 1").bind(slug,x.id).first();
-   if(duplicate)return json({error:"यह URL slug पहले से किसी दूसरे अध्याय में इस्तेमाल हो रहा है। कृपया अलग slug चुनें।",code:"DUPLICATE_SLUG",conflicting_chapter:duplicate.title||duplicate.id},409);
+   const duplicate:any=await env.DB.prepare("SELECT id,title,slug FROM chapters WHERE lower(trim(slug))=lower(trim(?)) AND id<>? LIMIT 1").bind(slug,x.id).first();
+   if(duplicate)return json({error:`यह URL slug पहले से “${duplicate.title||duplicate.id}” अध्याय में इस्तेमाल है (slug: ${duplicate.slug})। कृपया अलग slug चुनें।`,code:"DUPLICATE_SLUG",conflicting_chapter:duplicate.title||duplicate.id,conflicting_slug:duplicate.slug},409);
   }
   try{
    await env.DB.prepare(`INSERT INTO chapters(id,chapter_number,title,subtitle,slug,image_url,content_type,content_html,seo_title,seo_description,status,sort_order,updated_at)
