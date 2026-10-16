@@ -5,7 +5,10 @@ const DEFAULTS = {
  homepage_description: "सम्पूर्ण पाठ, संस्कृत सामग्री और हिन्दी अर्थ के लिए सरल और तेज़ reading experience।",
  seo_title: "दुर्गा सप्तशती | सम्पूर्ण पाठ",
  seo_description: "दुर्गा सप्तशती के अध्याय, संस्कृत पाठ और हिन्दी अर्थ।",
- menu_items: [{label:"होम",url:"/"},{label:"विषय सूची",url:"/#chapters"}]
+ menu_items: [{label:"होम",url:"/"},{label:"विषय सूची",url:"/#chapters"}],
+ adsense_publisher_id: "",
+ ga4_measurement_id: "",
+ search_console_verification: ""
 };
 async function ensureTable(db:D1Database){
  await db.prepare("CREATE TABLE IF NOT EXISTS site_settings (setting_key TEXT PRIMARY KEY, setting_value TEXT NOT NULL, updated_at TEXT DEFAULT CURRENT_TIMESTAMP)").run();
@@ -31,9 +34,15 @@ export const onRequestPost:PagesFunction<Env>=async({request,env})=>{
    homepage_description:String(x.homepage_description||"").trim().slice(0,1000),
    seo_title:String(x.seo_title||"").trim().slice(0,180),
    seo_description:String(x.seo_description||"").trim().slice(0,320),
-   menu_items:Array.isArray(x.menu_items)?x.menu_items.slice(0,20).map((m:any)=>({label:String(m.label||"").trim().slice(0,80),url:String(m.url||"").trim().slice(0,500)})).filter((m:any)=>m.label&&m.url):[]
+   menu_items:Array.isArray(x.menu_items)?x.menu_items.slice(0,20).map((m:any)=>({label:String(m.label||"").trim().slice(0,80),url:String(m.url||"").trim().slice(0,500)})).filter((m:any)=>m.label&&m.url):[],
+   adsense_publisher_id:String(x.adsense_publisher_id||"").trim().slice(0,40),
+   ga4_measurement_id:String(x.ga4_measurement_id||"").trim().slice(0,32),
+   search_console_verification:String(x.search_console_verification||"").trim().slice(0,200)
   };
   if(!values.homepage_title||!values.seo_title||!values.menu_items.length)return json({error:"Homepage title, SEO title और कम से कम एक menu link जरूरी है।"},400);
+  if(values.adsense_publisher_id && !/^ca-pub-\d{8,30}$/.test(values.adsense_publisher_id))return json({error:"AdSense Publisher ID ca-pub- और अंकों के रूप में डालें।"},400);
+  if(values.ga4_measurement_id && !/^G-[A-Z0-9]{4,20}$/.test(values.ga4_measurement_id))return json({error:"Google Analytics ID G-XXXXXXXXXX के प्रारूप में डालें।"},400);
+  if(values.search_console_verification && !/^[A-Za-z0-9_-]{10,200}$/.test(values.search_console_verification))return json({error:"Search Console verification token का प्रारूप सही नहीं है।"},400);
   for(const item of values.menu_items){if(!item.url.startsWith("/")&&!/^https:\/\//i.test(item.url))return json({error:"Menu URL / या https:// से शुरू होना चाहिए।"},400)}
   await ensureTable(env.DB);
   for(const [key,value] of Object.entries(values))await env.DB.prepare("INSERT INTO site_settings(setting_key,setting_value,updated_at) VALUES(?,?,CURRENT_TIMESTAMP) ON CONFLICT(setting_key) DO UPDATE SET setting_value=excluded.setting_value,updated_at=CURRENT_TIMESTAMP").bind(key,JSON.stringify(value)).run();
