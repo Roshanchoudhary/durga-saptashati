@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://durgasaptashati.in/sitemap.xml
+Disallow: /admin/
+Sitemap: https://hindi.durgasaptashati.in/sitemap.xml
