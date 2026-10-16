@@ -1,4 +1,4 @@
-import { Env, json, currentAdmin } from "./_shared";
+import { Env, json, currentAdmin } from "../_shared";
 
 const DEFAULTS = {
  homepage_title: "श्री दुर्गा सप्तशती",
