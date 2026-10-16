@@ -9,7 +9,7 @@
   if(s.homepage_description){const p=document.getElementById("homeDescription");if(p)p.textContent=s.homepage_description}
   if(s.seo_title)document.title=s.seo_title;
   if(s.seo_description){let m=document.querySelector('meta[name="description"]');if(m)m.content=s.seo_description;let og=document.querySelector('meta[property="og:description"]');if(og)og.content=s.seo_description}
-  if(Array.isArray(s.menu_items)&&nav){const theme=document.getElementById("theme"),toggle=document.getElementById("menuToggle");nav.querySelectorAll("a[data-site-menu]").forEach(a=>a.remove());for(const item of s.menu_items){const a=document.createElement("a");a.href=item.url;a.textContent=item.label;a.setAttribute("data-site-menu","");nav.insertBefore(a,theme||toggle||null)}}
+  if(Array.isArray(s.menu_items)&&nav){const theme=document.getElementById("theme"),toggle=document.getElementById("menuToggle");nav.querySelectorAll("a").forEach(a=>a.remove());for(const item of s.menu_items){const a=document.createElement("a");a.href=item.url;a.textContent=item.label;a.setAttribute("data-site-menu","");nav.insertBefore(a,theme||toggle||null)}}
  }).catch(()=>{});
  const list=document.getElementById("chapterList");if(!list)return;
  fetch("/api/chapters",{cache:"no-store"}).then(r=>r.json()).then(a=>{
