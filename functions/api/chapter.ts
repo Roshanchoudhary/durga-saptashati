@@ -16,6 +16,11 @@ export const onRequestPost:PagesFunction<Env>=async({request,env})=>{
   await ensureContentColumns(env.DB);
   if(!await currentAdmin(request,env))return json({error:"Unauthorized"},401);
   const x:any=await request.json();if(!x.id||!x.title)return json({error:"ID और नाम जरूरी हैं।"},400);
+  const slug=String(x.slug||"").trim();
+  if(slug){
+   const duplicate:any=await env.DB.prepare("SELECT id,title FROM chapters WHERE slug=? AND id<>? LIMIT 1").bind(slug,x.id).first();
+   if(duplicate)return json({error:"यह URL slug पहले से किसी दूसरे अध्याय में इस्तेमाल हो रहा है। कृपया अलग slug चुनें।",code:"DUPLICATE_SLUG",conflicting_chapter:duplicate.title||duplicate.id},409);
+  }
   try{
    await env.DB.prepare(`INSERT INTO chapters(id,chapter_number,title,subtitle,slug,image_url,content_type,content_html,seo_title,seo_description,status,sort_order,updated_at)
    VALUES(?,?,?,?,?,?,?,?,?,?,?,?,CURRENT_TIMESTAMP)
@@ -31,7 +36,12 @@ export const onRequestPost:PagesFunction<Env>=async({request,env})=>{
    .bind(x.id,Number(x.chapter_number||0),x.title,x.subtitle||"",x.slug||"",x.content_html||"",x.seo_title||"",x.seo_description||"",x.status||"published").run();
   }
   return json({ok:true});
- }catch(e:any){return json({error:e?.message||"Save failed"},500)}
+ }catch(e:any){
+  const message=String(e?.message||"");
+  if(/UNIQUE constraint failed:\s*chapters\.slug|UNIQUE constraint failed/i.test(message))
+   return json({error:"यह URL slug पहले से इस्तेमाल हो रहा है। कृपया अलग slug चुनें।",code:"DUPLICATE_SLUG"},409);
+  return json({error:message||"Save failed"},500)
+ }
 };
 export const onRequestDelete:PagesFunction<Env>=async({request,env})=>{
  try{if(!await currentAdmin(request,env))return json({error:"Unauthorized"},401);const id=new URL(request.url).searchParams.get("id");if(!id)return json({error:"Missing id"},400);await env.DB.prepare("DELETE FROM chapters WHERE id=?").bind(id).run();return json({ok:true})}
