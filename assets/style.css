@@ -101,3 +101,8 @@
 .reading .inline-content-image img{max-width:100%;width:auto;height:auto;max-height:none}
 .editable .inline-content-image{margin:18px auto}
 .editable .inline-content-image img{max-width:100%;width:auto;height:auto;max-height:420px;object-fit:contain}
+
+/* Homepage uploaded cover images: show full image without fixed-height cropping */
+.content-card .card-image{height:auto;min-height:0;aspect-ratio:auto;display:block;overflow:hidden}
+.content-card .card-image img{display:block;width:100%;height:auto;max-height:none;object-fit:contain}
+.content-card .card-body small{display:block;line-height:1.6;margin-top:7px;white-space:normal}

@@ -19,6 +19,6 @@
   if(!Array.isArray(a))throw 0;
   list.innerHTML=a.length?a.map((x,i)=>`<a class="card content-card" href="/chapter.html?id=${encodeURIComponent(x.id)}">
    ${x.image_url?`<div class="card-image"><img src="${String(x.image_url).replace(/"/g,"&quot;")}" alt="${String(x.title||"").replace(/"/g,"&quot;")}" loading="lazy"></div>`:`<div class="card-image placeholder">ॐ</div>`}
-   <div class="card-body"><span class="card-number">${String(x.chapter_number||i+1).padStart(2,"0")}</span><b>${x.title||""}</b><small>${x.subtitle||x.content_type||""}</small></div></a>`).join(""):`<div class="skeleton">Admin से सामग्री जोड़ें।</div>`;
+   <div class="card-body"><b>${x.title||""}</b><small>${x.seo_description||x.subtitle||x.seo_title||"दुर्गा सप्तशती का पाठ, अर्थ और देवी उपासना की सामग्री पढ़ें।"}</small></div></a>`).join(""):`<div class="skeleton">Admin से सामग्री जोड़ें।</div>`;
  }).catch(()=>list.innerHTML='<div class="skeleton">विषय सूची अभी उपलब्ध नहीं है।</div>');
 })();
