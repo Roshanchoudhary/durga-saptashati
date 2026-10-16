@@ -80,3 +80,16 @@
 .admin .editable .editor-font-size-7,.admin .editable font[size="7"]{font-size:34px!important}
 .admin .toolbar select{min-width:78px}
 @media(max-width:520px){.admin .toolbar{max-height:none}.admin .toolbar button,.admin .toolbar select{font-size:13px;padding:7px 8px}.admin .editable{min-height:480px}}
+
+/* Responsive editable site navigation */
+#mainNav{flex-wrap:wrap}
+.menu-toggle{display:none}
+@media(max-width:520px){
+ #mainNav{gap:8px}
+ #mainNav .menu-toggle{display:inline-flex;align-items:center;justify-content:center;min-width:42px;min-height:40px}
+ #mainNav a[data-site-menu]{display:none}
+ #mainNav.menu-open{padding:8px 0;align-items:flex-start}
+ #mainNav.menu-open a[data-site-menu]{display:block;width:100%;padding:8px 10px;border-radius:8px;background:var(--surface)}
+ #mainNav.menu-open{display:flex}
+ #mainNav.menu-open .menu-toggle{margin-left:auto}
+}
