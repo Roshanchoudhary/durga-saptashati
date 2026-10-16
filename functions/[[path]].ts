@@ -3,8 +3,9 @@ const reserved = new Set(["", "index.html", "chapter.html", "stotra.html", "site
 export const onRequest: PagesFunction = async ({ request, next }) => {
   const url = new URL(request.url);
   const path = url.pathname.slice(1).replace(/\/$/, "");
-  if (url.pathname.startsWith("/api/") || url.pathname.startsWith("/assets/") || url.pathname.startsWith("/admin/") || reserved.has(path) || path.includes(".")) return next();
+  if (request.method !== "GET" && request.method !== "HEAD") return next();
+  if (url.pathname.startsWith("/api/") || url.pathname.startsWith("/assets/") || url.pathname.startsWith("/admin/") || path === "admin" || reserved.has(path) || path.includes(".")) return next();
   const rewritten = new URL("/chapter.html", url);
   rewritten.searchParams.set("slug", decodeURIComponent(path));
-  return next({ request: new Request(rewritten.toString(), request) });
+  return next({ request: new Request(rewritten.toString(), { method: request.method, headers: request.headers, redirect: request.redirect }) });
 };
