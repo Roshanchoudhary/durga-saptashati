@@ -2,13 +2,13 @@ import {json,currentAdmin,Env,ensureContentColumns} from "../_shared";
 export const onRequestGet:PagesFunction<Env>=async({request,env})=>{
  try{
   await ensureContentColumns(env.DB);
-  const id=new URL(request.url).searchParams.get("id");if(!id)return json({error:"Missing id"},400);
+  const url=new URL(request.url);const id=url.searchParams.get("id");const slug=url.searchParams.get("slug");if(!id&&!slug)return json({error:"Missing id or slug"},400);
   let x:any;
-  try{x=await env.DB.prepare("SELECT * FROM chapters WHERE id=? AND status='published'").bind(id).first()}catch{ x=null }
+  try{x=slug?await env.DB.prepare("SELECT * FROM chapters WHERE status='published' AND (slug=? OR id=?) ORDER BY CASE WHEN slug=? THEN 0 ELSE 1 END LIMIT 1").bind(slug,slug,slug).first():await env.DB.prepare("SELECT * FROM chapters WHERE id=? AND status='published'").bind(id).first()}catch{ x=null }
   if(!x)return json({error:"Not found"},404);
-  const p:any=await env.DB.prepare("SELECT id FROM chapters WHERE status='published' AND chapter_number<? ORDER BY chapter_number DESC LIMIT 1").bind(x.chapter_number).first();
-  const n:any=await env.DB.prepare("SELECT id FROM chapters WHERE status='published' AND chapter_number>? ORDER BY chapter_number LIMIT 1").bind(x.chapter_number).first();
-  return json({...x,prev:p?.id||null,next:n?.id||null,image_url:x.image_url||"",content_type:x.content_type||"content"});
+  const p:any=await env.DB.prepare("SELECT id,slug,title FROM chapters WHERE status='published' AND chapter_number<? ORDER BY chapter_number DESC LIMIT 1").bind(x.chapter_number).first();
+  const n:any=await env.DB.prepare("SELECT id,slug,title FROM chapters WHERE status='published' AND chapter_number>? ORDER BY chapter_number LIMIT 1").bind(x.chapter_number).first();
+  return json({...x,prev:p?.id||null,next:n?.id||null,prev_slug:p?.slug||p?.id||null,next_slug:n?.slug||n?.id||null,prev_title:p?.title||null,next_title:n?.title||null,image_url:x.image_url||"",content_type:x.content_type||"content"});
  }catch(e:any){return json({error:e?.message||"Database error"},500)}
 };
 export const onRequestPost:PagesFunction<Env>=async({request,env})=>{
