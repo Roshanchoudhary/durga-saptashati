@@ -14,6 +14,23 @@ document.querySelectorAll("[data-size]").forEach(sel=>sel.onchange=()=>{const e=
 $("insertMarker")?.addEventListener("click",()=>{restore();document.execCommand("insertText",false,"~");remember()});
 function wrap(cls){restore();const s=getSelection();if(!s.rangeCount||s.isCollapsed)return;const r=s.getRangeAt(0);const sp=document.createElement("span");sp.className=cls;sp.appendChild(r.extractContents());r.insertNode(sp);remember()}
 $("makeSanskrit")?.addEventListener("click",()=>wrap("sanskrit-text"));$("makeHindi")?.addEventListener("click",()=>wrap("hindi-text"));
+$("insertImageUrl")?.addEventListener("click",()=>{
+ const url=prompt("फोटो का direct URL डालें (https://...):");
+ if(!url)return;
+ let parsed;try{parsed=new URL(url.trim())}catch{alert("कृपया सही फोटो URL डालें।");return}
+ if(!["https:","http:"].includes(parsed.protocol)){alert("फोटो URL https:// या http:// से शुरू होना चाहिए।");return}
+ const alt=prompt("फोटो का छोटा विवरण (वैकल्पिक):")||"";
+ const root=$("content");restore();root.focus();
+ const figure=document.createElement("figure");figure.className="inline-content-image";
+ const img=document.createElement("img");img.src=parsed.href;img.alt=alt.trim();img.loading="lazy";img.referrerPolicy="no-referrer";
+ img.onerror=()=>{alert("फोटो लोड नहीं हो सकी। URL direct image link होना चाहिए।");};
+ figure.appendChild(img);
+ const sel=getSelection();
+ if(sel&&sel.rangeCount&&!sel.isCollapsed){const range=sel.getRangeAt(0);range.deleteContents();range.insertNode(figure);range.setStartAfter(figure);range.collapse(true);sel.removeAllRanges();sel.addRange(range)}
+ else {root.appendChild(figure);const br=document.createElement("p");br.appendChild(document.createElement("br"));root.appendChild(br);const range=document.createRange();range.selectNodeContents(br);range.collapse(true);sel?.removeAllRanges();sel?.addRange(range)}
+ remember();
+});
+
 $("anushtubh")?.addEventListener("click",()=>{restore();const s=getSelection();if(!s.rangeCount||s.isCollapsed){alert("चार पाद select करें।");return}const r=s.getRangeAt(0),text=r.cloneContents().textContent||"",lines=text.split(/\n/).map(x=>x.trim()).filter(Boolean);if(lines.length!==4){alert("अनुष्टुप् के लिए चार पाद अलग-अलग line में रखें और select करें।");return}const box=document.createElement("div");box.className="sanskrit-text";box.dataset.chhand="anushtubh";box.innerHTML=lines.map((x,i)=>`<div data-pada="${i+1}" class="${i===0||i===3?"tone-a":"tone-b"}">${x}</div>`).join("");r.deleteContents();r.insertNode(box);remember()});
 $("logout")?.addEventListener("click",async()=>{await fetch("/api/admin/logout",{method:"POST",credentials:"include"});location.replace("/admin/login.html")});
 async function loadSiteSettings(){try{const r=await fetch("/api/site-settings",{credentials:"include",cache:"no-store"});if(!r.ok)return;const s=await r.json();$("homeTitleSetting").value=s.homepage_title||"";$("homeDescriptionSetting").value=s.homepage_description||"";$("homeSeoTitle").value=s.seo_title||"";$("homeSeoDescription").value=s.seo_description||"";$("menuItemsSetting").value=(s.menu_items||[]).map(x=>x.label+" | "+x.url).join("\n");$("adsensePublisherId").value=s.adsense_publisher_id||"";$("ga4MeasurementId").value=s.ga4_measurement_id||"";$("searchConsoleVerification").value=s.search_console_verification||"";}catch{}}

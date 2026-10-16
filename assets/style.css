@@ -93,3 +93,11 @@
  #mainNav.menu-open{display:flex}
  #mainNav.menu-open .menu-toggle{margin-left:auto}
 }
+
+/* Images inserted inside chapter content by URL */
+.inline-content-image{display:block;margin:24px auto;text-align:center;max-width:100%}
+.inline-content-image img{display:block;width:auto;height:auto;max-width:100%;max-height:none;margin:0 auto;border-radius:12px;object-fit:contain}
+.reading .inline-content-image{margin:28px auto}
+.reading .inline-content-image img{max-width:100%;width:auto;height:auto;max-height:none}
+.editable .inline-content-image{margin:18px auto}
+.editable .inline-content-image img{max-width:100%;width:auto;height:auto;max-height:420px;object-fit:contain}
