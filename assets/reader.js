@@ -75,12 +75,8 @@
    head.innerHTML=(x.image_url?`<div class="post-cover"><img src="${esc(x.image_url)}" alt="${esc(x.title)}"></div>`:"")+`<div class="eyebrow">${esc(x.content_type||"देवी उपासना")}</div><h1>${esc(x.title)}</h1>${x.subtitle?`<p class="subtitle">${esc(x.subtitle)}</p>`:""}`;
    content.innerHTML=x.content_html||"<div class='notice'>इस पोस्ट में अभी सामग्री नहीं है।</div>";
    applyMarkerColors(content);anushtubh(content);size();makeSpeakableWords(content);
-   const cleanSlug=x.slug||x.id;
-   const cleanUrl="/"+encodeURIComponent(cleanSlug);
-   if(location.pathname!==cleanUrl)history.replaceState(null,"",cleanUrl);
-   let canonical=document.querySelector('link[rel="canonical"]');if(!canonical){canonical=document.createElement("link");canonical.rel="canonical";document.head.appendChild(canonical)}canonical.href=location.origin+cleanUrl;
-   const prevUrl=x.prev_slug?"/"+encodeURIComponent(x.prev_slug):(x.prev?"/"+encodeURIComponent(x.prev):null);
-   const nextUrl=x.next_slug?"/"+encodeURIComponent(x.next_slug):(x.next?"/"+encodeURIComponent(x.next):null);
+   const prevUrl=x.prev?"/chapter.html?id="+encodeURIComponent(x.prev):null;
+   const nextUrl=x.next?"/chapter.html?id="+encodeURIComponent(x.next):null;
    ["#prev","#prevBottom"].forEach(sel=>{href(sel,prevUrl);const n=q(sel+" .nav-name");if(n)n.textContent=x.prev_title||"पिछला"});
    ["#next","#nextBottom"].forEach(sel=>{href(sel,nextUrl);const n=q(sel+" .nav-name");if(n)n.textContent=x.next_title||"अगला"});
    const bm="bookmark:"+(x.id||id||slug);if(localStorage.getItem(bm))q("#bookmark").textContent="🔖 सुरक्षित";
