@@ -29,7 +29,5 @@ export const onRequest: PagesFunction = async ({ request, next }) => {
   rewritten.searchParams.set("slug", slug);
 
   // Preserve the original request options while rewriting only the URL.
-  return next({
-    request: new Request(rewritten.toString(), request),
-  });
+  return next(new Request(rewritten.toString(), request));
 };
