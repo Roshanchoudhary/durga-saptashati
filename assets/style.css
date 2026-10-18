@@ -137,3 +137,9 @@
 .navrow a{display:flex;min-width:0;width:100%;max-width:100%;align-items:center;justify-content:center;gap:5px;white-space:normal;overflow-wrap:anywhere;word-break:normal;text-align:center;line-height:1.4;padding:12px 8px}
 .navrow .nav-name{display:inline;max-width:100%;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
 @media(max-width:520px){.navrow{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.navrow a{font-size:clamp(12px,3.5vw,15px);padding:10px 5px;min-height:92px}.navrow .nav-name{max-width:100%;white-space:normal}}
+
+
+/* Improved Sanskrit typography and additional marker color choices */
+@import url('https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Noto+Serif+Devanagari:wght@400;500;600;700&display=swap');
+.reading .sanskrit-text,.editable .sanskrit-text{font-family:'Tiro Devanagari Sanskrit','Noto Serif Devanagari','Nirmala UI',serif}
+.marker-part.marker-color-1{color:#9b1c1c}.marker-part.marker-color-2{color:#246b32}.marker-part.marker-color-3{color:#1457a6}.marker-part.marker-color-4{color:#b85b08}.marker-part.marker-color-5{color:#7836a8}
