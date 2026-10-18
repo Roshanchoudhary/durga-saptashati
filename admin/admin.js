@@ -12,7 +12,7 @@ document.querySelectorAll(".toolbar").forEach(tb=>{
 document.querySelectorAll("[data-font]").forEach(sel=>sel.onchange=()=>{const e=$(sel.dataset.font);restore();e.focus();if(sel.value)document.execCommand("fontName",false,sel.value);normalizeEditorFonts();remember()});
 document.querySelectorAll("[data-size]").forEach(sel=>sel.onchange=()=>{const e=$(sel.dataset.size);restore();e.focus();document.execCommand("fontSize",false,sel.value||"3");normalizeEditorFonts();remember()});
 $("insertMarker")?.addEventListener("click",()=>{restore();document.execCommand("insertText",false,"~");remember()});
-function wrap(cls){restore();const s=getSelection();if(!s.rangeCount||s.isCollapsed)return;const r=s.getRangeAt(0);const sp=document.createElement("span");sp.className=cls;sp.appendChild(r.extractContents());r.insertNode(sp);remember()}
+function wrap(cls){restore();const s=getSelection();if(!s.rangeCount||s.isCollapsed)return;const r=s.getRangeAt(0);let node=r.commonAncestorContainer;if(node.nodeType===3)node=node.parentElement;const existing=node.closest?.("."+cls);if(existing&&existing.contains(r.startContainer)&&existing.contains(r.endContainer)){const parent=existing.parentNode;while(existing.firstChild)parent.insertBefore(existing.firstChild,existing);existing.remove();remember();return}const sp=document.createElement("span");sp.className=cls;sp.appendChild(r.extractContents());r.insertNode(sp);remember()}
 $("makeSanskrit")?.addEventListener("click",()=>wrap("sanskrit-text"));$("makeHindi")?.addEventListener("click",()=>wrap("hindi-text"));
 $("insertImageUrl")?.addEventListener("click",()=>{
  const url=prompt("फोटो का direct URL डालें (https://...):");
