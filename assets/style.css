@@ -130,3 +130,10 @@
 .devi-mark .devi-photo{display:block;width:100%;height:auto;max-height:min(55vh,460px);object-fit:contain}
 @media(max-width:820px){.devi-mark{width:100%;max-width:min(72vw,360px);margin:8px auto 0}.devi-mark .devi-photo{width:100%;height:auto;max-height:42vh}}
 @media(max-width:420px){.devi-mark{max-width:82vw}.devi-mark .devi-photo{max-height:38vh}}
+
+
+/* Fix chapter navigation buttons above and below the reading area on phones */
+.navrow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));align-items:stretch;gap:8px;width:100%;min-width:0}
+.navrow a{display:flex;min-width:0;width:100%;max-width:100%;align-items:center;justify-content:center;gap:5px;white-space:normal;overflow-wrap:anywhere;word-break:normal;text-align:center;line-height:1.4;padding:12px 8px}
+.navrow .nav-name{display:inline;max-width:100%;white-space:normal;overflow:visible;text-overflow:clip;overflow-wrap:anywhere}
+@media(max-width:520px){.navrow{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.navrow a{font-size:clamp(12px,3.5vw,15px);padding:10px 5px;min-height:92px}.navrow .nav-name{max-width:100%;white-space:normal}}
