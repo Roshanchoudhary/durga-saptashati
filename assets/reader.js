@@ -9,7 +9,7 @@
  function applyMarkerColors(root){
    const nodes=[];const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;
    while(n=w.nextNode())if(n.nodeValue&&n.nodeValue.includes("~"))nodes.push(n);
-   let tone=0;nodes.forEach(node=>{const parts=node.nodeValue.split("~");if(parts.length<2)return;const frag=document.createDocumentFragment();parts.forEach((part,i)=>{if(part){const sp=document.createElement("span");sp.className=tone%2?"marker-part tone-b":"marker-part tone-a";sp.textContent=part;frag.appendChild(sp)}if(i<parts.length-1)tone++});node.parentNode.replaceChild(frag,node)});
+   let tone=0;nodes.forEach(node=>{const parts=node.nodeValue.split("~");if(parts.length<2)return;const frag=document.createDocumentFragment();parts.forEach((part,i)=>{if(part){const sp=document.createElement("span");sp.className="marker-part marker-color-"+(tone%5+1);sp.textContent=part;frag.appendChild(sp)}if(i<parts.length-1)tone++});node.parentNode.replaceChild(frag,node)});
  }
  function anushtubh(root){root.querySelectorAll('.sanskrit-text[data-chhand="anushtubh"]').forEach(el=>{const p=[...el.querySelectorAll("[data-pada]")];if(p.length===4)p.forEach((x,i)=>x.classList.add(i===0||i===3?"tone-a":"tone-b"))})}
  function makeSpeakableWords(root){
