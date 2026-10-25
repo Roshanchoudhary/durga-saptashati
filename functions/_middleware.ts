@@ -95,12 +95,31 @@ const DESTINATIONS: Record<string, string> = {
 
 export const onRequest: PagesFunction = async ({ request, next }) => {
   const url = new URL(request.url);
-  if (!LEGACY_HOSTS.has(url.hostname.toLowerCase())) return next();
+  const isLegacyHost = LEGACY_HOSTS.has(url.hostname.toLowerCase());
 
-  const destination = DESTINATIONS[url.pathname];
-  if (!destination) return next();
+  if (isLegacyHost) {
+    const destination = DESTINATIONS[url.pathname];
 
-  // Keep unrelated query parameters out of the destination; the new page ID is explicit.
-  const target = new URL(destination, "https://durgasaptashati.in");
-  return Response.redirect(target.toString(), 301);
+    // Known old URLs get a permanent redirect to their matching new page.
+    if (destination) {
+      const target = new URL(destination, "https://durgasaptashati.in");
+      return Response.redirect(target.toString(), 301);
+    }
+
+    // Unknown paths on old domains go to the new homepage.
+    return Response.redirect("https://durgasaptashati.in/", 301);
+  }
+
+  // Keep APIs and static assets' real 404 responses intact. Only redirect
+  // browser page requests that would otherwise show a 404 page.
+  const acceptsHtml = request.headers.get("accept")?.includes("text/html");
+  if (acceptsHtml && !url.pathname.startsWith("/api/")) {
+    const response = await next();
+    if (response.status === 404) {
+      return Response.redirect("https://durgasaptashati.in/", 302);
+    }
+    return response;
+  }
+
+  return next();
 };
