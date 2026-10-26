@@ -1,5 +1,11 @@
 async function auth(){const r=await fetch("/api/admin/me",{credentials:"include",cache:"no-store"});if(!r.ok){location.replace("/admin/login.html");return false}document.getElementById("panel").hidden=false;document.getElementById("authMsg").hidden=true;return true}
 const $=x=>document.getElementById(x);let range=null;
+// Editor history: stable undo/redo for formatting operations and typing.
+const editorHistory={items:[],index:-1,timer:null,restoring:false};
+function historySave(){const root=$("content");if(!root||editorHistory.restoring)return;const value=root.innerHTML;if(editorHistory.items[editorHistory.index]===value)return;editorHistory.items=editorHistory.items.slice(0,editorHistory.index+1);editorHistory.items.push(value);if(editorHistory.items.length>100)editorHistory.items.shift();editorHistory.index=editorHistory.items.length-1;historyButtons()}
+function historyButtons(){const u=$("undoEditor"),r=$("redoEditor");if(u)u.disabled=editorHistory.index<=0;if(r)r.disabled=editorHistory.index<0||editorHistory.index>=editorHistory.items.length-1}
+function historyRestore(delta){const next=editorHistory.index+delta;if(next<0||next>=editorHistory.items.length)return;editorHistory.restoring=true;editorHistory.index=next;$("content").innerHTML=editorHistory.items[next];range=null;historyButtons();editorHistory.restoring=false;$("content").focus()}
+
 function remember(){const s=getSelection();if(s&&s.rangeCount)range=s.getRangeAt(0).cloneRange()}
 function restore(){const s=getSelection();if(range){try{s.removeAllRanges();s.addRange(range)}catch{}}}
 function normalizeEditorFonts(){const root=$("content");if(!root)return;root.querySelectorAll("font").forEach(f=>{const size=f.getAttribute("size");if(size&&!f.className)f.className="editor-font-size-"+size;f.removeAttribute("face")})}
@@ -12,8 +18,35 @@ document.querySelectorAll(".toolbar").forEach(tb=>{
 document.querySelectorAll("[data-font]").forEach(sel=>sel.onchange=()=>{const e=$(sel.dataset.font);restore();e.focus();if(sel.value)document.execCommand("fontName",false,sel.value);normalizeEditorFonts();remember()});
 document.querySelectorAll("[data-size]").forEach(sel=>sel.onchange=()=>{const e=$(sel.dataset.size);restore();e.focus();document.execCommand("fontSize",false,sel.value||"3");normalizeEditorFonts();remember()});
 $("insertMarker")?.addEventListener("click",()=>{restore();document.execCommand("insertText",false,"~");remember()});
-function wrap(cls){restore();const s=getSelection();if(!s.rangeCount||s.isCollapsed)return;const r=s.getRangeAt(0);let node=r.commonAncestorContainer;if(node.nodeType===3)node=node.parentElement;const existing=node.closest?.("."+cls);if(existing&&existing.contains(r.startContainer)&&existing.contains(r.endContainer)){const parent=existing.parentNode;while(existing.firstChild)parent.insertBefore(existing.firstChild,existing);existing.remove();remember();return}const sp=document.createElement("span");sp.className=cls;sp.appendChild(r.extractContents());r.insertNode(sp);remember()}
+function wrap(cls){
+ restore();const s=getSelection();if(!s||!s.rangeCount||s.isCollapsed)return;
+ const r=s.getRangeAt(0);const anchor=s.anchorNode?.nodeType===1?s.anchorNode:s.anchorNode?.parentElement;
+ const focus=s.focusNode?.nodeType===1?s.focusNode:s.focusNode?.parentElement;
+ const a=anchor?.closest?.("."+cls),f=focus?.closest?.("."+cls);
+ if(a&&a===f&&a.contains(r.startContainer)&&a.contains(r.endContainer)){
+   const p=a.parentNode;while(a.firstChild)p.insertBefore(a.firstChild,a);a.remove();remember();historySave();return;
+ }
+ // If selected text is already marked, unwrap the intersecting marker before applying one clean wrapper.
+ const root=$("content");const matches=[...root.querySelectorAll("."+cls)].filter(el=>{try{return r.intersectsNode(el)}catch{return false}});
+ matches.forEach(el=>{if(el.contains(r.startContainer)&&el.contains(r.endContainer))return;const p=el.parentNode;while(el.firstChild)p.insertBefore(el.firstChild,el);el.remove()});
+ const current=getSelection();if(!current.rangeCount)return;const rr=current.getRangeAt(0);
+ const sp=document.createElement("span");sp.className=cls;sp.appendChild(rr.extractContents());rr.insertNode(sp);
+ const after=document.createRange();after.selectNodeContents(sp);current.removeAllRanges();current.addRange(after);remember();historySave();
+}
 $("makeSanskrit")?.addEventListener("click",()=>wrap("sanskrit-text"));$("makeHindi")?.addEventListener("click",()=>wrap("hindi-text"));
+$("undoEditor")?.addEventListener("click",()=>historyRestore(-1));$("redoEditor")?.addEventListener("click",()=>historyRestore(1));
+$("cleanSpacing")?.addEventListener("click",()=>{
+ const root=$("content");restore();root.focus();
+ root.querySelectorAll("p,div").forEach(el=>{
+   if(el.closest(".sanskrit-text,.hindi-text"))return;
+   if(!el.textContent.trim()&&!el.querySelector("img,figure"))el.remove();
+   else {el.style.marginBlockStart="0";el.style.marginBlockEnd="0.45em"}
+ });
+ root.querySelectorAll("br + br + br").forEach(el=>el.remove());
+ normalizeEditorFonts();historySave();remember();
+});
+$("content")?.addEventListener("input",()=>{clearTimeout(editorHistory.timer);editorHistory.timer=setTimeout(historySave,250)});
+
 $("insertImageUrl")?.addEventListener("click",()=>{
  const url=prompt("फोटो का direct URL डालें (https://...):");
  if(!url)return;
@@ -40,4 +73,4 @@ window.deleteChapter=async id=>{const item=await fetch("/api/chapter?id="+encode
 window.edit=async id=>{const x=await fetch("/api/chapter?id="+encodeURIComponent(id),{cache:"no-store"}).then(r=>r.json());$("id").value=x.id;$("num").value=x.chapter_number||"";$("title").value=x.title||"";$("slug").value=x.slug||"";$("sub").value=x.subtitle||"";$("imageUrl").value=x.image_url||"";$("contentType").value=x.content_type||"content";$("seoTitle").value=x.seo_title||"";$("seoDesc").value=x.seo_description||"";$("content").innerHTML=x.content_html||"";scrollTo(0,0)};
 $("save").onclick=async()=>{normalizeEditorFonts();const p={id:$("id").value||crypto.randomUUID(),chapter_number:Number($("num").value||0),title:$("title").value.trim(),slug:$("slug").value.trim(),subtitle:$("sub").value.trim(),image_url:$("imageUrl").value.trim(),content_type:$("contentType").value,content_html:$("content").innerHTML,seo_title:$("seoTitle").value.trim(),seo_description:$("seoDesc").value.trim(),status:"published"};if(!p.title){$("msg").textContent="✕ शीर्षक जरूरी है।";return}const r=await fetch("/api/chapter",{method:"POST",headers:{"content-type":"application/json"},credentials:"include",body:JSON.stringify(p)}),x=await r.json().catch(()=>({}));$("msg").textContent=r.ok?"✓ Published":"✕ "+(x.error||"Save failed");if(r.ok)load()};
 $("new")?.addEventListener("click",()=>location.reload());$("content")?.addEventListener("paste",()=>setTimeout(normalizeEditorFonts,0));$("saveGoogleSettings")?.addEventListener("click",async()=>{const payload={homepage_title:$("homeTitleSetting").value.trim()||"श्री दुर्गा सप्तशती",homepage_description:$("homeDescriptionSetting").value.trim(),seo_title:$("homeSeoTitle").value.trim()||"दुर्गा सप्तशती | सम्पूर्ण पाठ",seo_description:$("homeSeoDescription").value.trim(),menu_items:$("menuItemsSetting").value.split(/\r?\n/).map(line=>{const p=line.split("|");return {label:(p.shift()||"").trim(),url:p.join("|").trim()}}).filter(x=>x.label&&x.url),adsense_publisher_id:$("adsensePublisherId").value.trim(),ga4_measurement_id:$("ga4MeasurementId").value.trim(),search_console_verification:$("searchConsoleVerification").value.trim()};const b=$("saveGoogleSettings");b.disabled=true;try{const r=await fetch("/api/site-settings",{method:"POST",headers:{"content-type":"application/json"},credentials:"include",body:JSON.stringify(payload)});const x=await r.json().catch(()=>({}));$("googleSettingsMsg").textContent=r.ok?"✓ Google settings save हो गईं।":"✕ "+(x.error||"Save failed")}catch{$("googleSettingsMsg").textContent="✕ नेटवर्क समस्या"}finally{b.disabled=false}});
-auth().then(ok=>{if(ok){load();loadSiteSettings()}});
+auth().then(ok=>{if(ok){load();loadSiteSettings();historySave()}});
