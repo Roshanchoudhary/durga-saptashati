@@ -71,7 +71,10 @@
   try{
    const key=id?("id="+encodeURIComponent(id)):("slug="+encodeURIComponent(slug));
    const r=await fetch("/api/chapter?"+key,{cache:"no-store"}),x=await r.json();if(!r.ok)throw 0;
-   document.title=(x.title||"दुर्गा सप्तशती")+" | दुर्गा सप्तशती";
+   document.title=x.seo_title||((x.title||"दुर्गा सप्तशती")+" | दुर्गा सप्तशती");
+   let description=document.querySelector('meta[name="description"]');
+   if(!description){description=document.createElement("meta");description.name="description";document.head.appendChild(description)}
+   description.content=x.seo_description||((x.title||"दुर्गा सप्तशती")+" का संस्कृत पाठ पढ़ें। दुर्गा सप्तशती और देवी उपासना से संबंधित सामग्री यहाँ देखें.");
    head.innerHTML=(x.image_url?`<div class="post-cover"><img src="${esc(x.image_url)}" alt="${esc(x.title)}"></div>`:"")+`<div class="eyebrow">${esc(x.content_type||"देवी उपासना")}</div><h1>${esc(x.title)}</h1>${x.subtitle?`<p class="subtitle">${esc(x.subtitle)}</p>`:""}`;
    content.innerHTML=x.content_html||"<div class='notice'>इस पोस्ट में अभी सामग्री नहीं है।</div>";
    applyMarkerColors(content);anushtubh(content);size();makeSpeakableWords(content);
