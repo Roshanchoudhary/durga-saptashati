@@ -153,3 +153,40 @@
 .admin .editable .hindi-text{font-family:'Noto Sans Devanagari','Nirmala UI',sans-serif;line-height:1.75;margin:8px 0;padding:8px 10px}
 .admin .toolbar button:disabled{opacity:.42;cursor:not-allowed}
 .admin .toolbar button:focus-visible,.admin .toolbar select:focus-visible{outline:2px solid var(--brand2);outline-offset:2px}
+
+
+/* Mobile reader: compact, balanced controls and chapter navigation */
+@media(max-width:520px){
+ .reader{padding-top:18px;padding-bottom:34px}
+ .reader #head{margin-bottom:14px}
+ .reader #head h1{font-size:clamp(28px,7.5vw,36px);line-height:1.25;letter-spacing:-.02em;margin:8px 0 14px;overflow-wrap:anywhere}
+ .reader-tools{
+   position:static;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));
+   align-items:stretch;justify-content:stretch;gap:8px;
+   margin:0 0 14px;padding:12px;
+   border:1px solid var(--line);border-radius:16px;
+   background:var(--surface);box-shadow:0 5px 18px rgba(70,30,10,.045)
+ }
+ .reader-tools button{
+   display:flex;align-items:center;justify-content:center;gap:4px;
+   min-width:0;min-height:44px;padding:8px 4px;
+   border:1px solid var(--line);border-radius:10px;
+   font-size:clamp(11px,3.1vw,14px);line-height:1.25;
+   white-space:normal;overflow-wrap:anywhere
+ }
+ .reader-tools #speak{grid-column:span 2;order:1}
+ .reader-tools #stop{grid-column:span 2;order:2}
+ .reader-tools #minus{order:3}\n .reader-tools #plus{order:4}\n .reader-tools #copy{grid-column:span 2;order:5}\n .reader-tools #share{grid-column:span 2;order:6}
+ .reader-tools #bookmark{grid-column:span 4;order:7}
+ .reader-tools .speak-status{grid-column:1/-1;order:8;min-height:0;width:100%;padding:0;text-align:center}
+ .navrow{gap:8px;margin:0 0 18px}
+ .navrow a{
+   min-height:68px;height:100%;padding:10px 5px;
+   border-radius:12px;font-size:clamp(11px,3.2vw,14px);
+   line-height:1.35;box-shadow:0 2px 8px rgba(70,30,10,.035)
+ }
+ .navrow a:nth-child(2){font-weight:700}
+ .navrow .nav-arrow{flex-shrink:0;color:var(--brand2)}
+ .navrow .nav-name{font-weight:700}
+ .navrow-bottom{margin-top:22px;padding-top:14px}
+}
