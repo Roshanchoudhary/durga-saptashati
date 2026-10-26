@@ -143,3 +143,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Sanskrit:ital@0;1&family=Noto+Serif+Devanagari:wght@400;500;600;700&display=swap');
 .reading .sanskrit-text,.editable .sanskrit-text{font-family:'Tiro Devanagari Sanskrit','Noto Serif Devanagari','Nirmala UI',serif}
 .marker-part.marker-color-1{color:#9b1c1c}.marker-part.marker-color-2{color:#246b32}.marker-part.marker-color-3{color:#1457a6}.marker-part.marker-color-4{color:#b85b08}.marker-part.marker-color-5{color:#7836a8}
+
+/* Sanskrit editor fixes: consistent Devanagari font, compact paragraphs and clearer toolbar states */
+.admin .editable{font-family:'Tiro Devanagari Sanskrit','Noto Serif Devanagari','Nirmala UI',serif;line-height:1.75;white-space:normal;overflow-wrap:anywhere}
+.admin .editable p{margin-block:0 .45em}
+.admin .editable p:empty{display:none}
+.admin .editable p br:only-child{display:none}
+.admin .editable .sanskrit-text{font-family:'Tiro Devanagari Sanskrit','Noto Serif Devanagari','Nirmala UI',serif;font-size:1.15em;line-height:1.8;margin:8px 0;padding:8px 10px;background:#fff8e8;border:1px solid #f0dfab;border-radius:9px}
+.admin .editable .hindi-text{font-family:'Noto Sans Devanagari','Nirmala UI',sans-serif;line-height:1.75;margin:8px 0;padding:8px 10px}
+.admin .toolbar button:disabled{opacity:.42;cursor:not-allowed}
+.admin .toolbar button:focus-visible,.admin .toolbar select:focus-visible{outline:2px solid var(--brand2);outline-offset:2px}
