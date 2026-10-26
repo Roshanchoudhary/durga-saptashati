@@ -22,31 +22,31 @@ UPDATE chapters SET seo_title='श्री देवी अथर्वशी�
 
 UPDATE chapters SET seo_title='नवार्ण विधि | दुर्गा सप्तशती पाठ', seo_description='दुर्गा सप्तशती से संबंधित नवार्ण विधि का पाठ पढ़ें। नवार्ण मंत्र और देवी उपासना से जुड़े इस पाठ की सामग्री यहाँ देखें।' WHERE id='navarna-vidhi';
 
-UPDATE chapters SET seo_title='दुर्गा सप्तशती प्रथम अध्याय | संस्कृत पाठ', seo_description='श्री दुर्गा सप्तशती के प्रथम अध्याय का संस्कृत पाठ पढ़ें। देवी माहात्म्य के इस अध्याय के श्लोक यहाँ क्रम से उपलब्ध हैं।' WHERE id='durga-saptashati-pratham-adhyay';
+UPDATE chapters SET seo_title='दुर्गा सप्तशती प्रथम अध्याय | मधु-कैटभ वध', seo_description='प्रथम अध्याय में राजा सुरथ और वैश्य समाधि की कथा के साथ महामाया की शक्ति का वर्णन है। ब्रह्मा की स्तुति पर योगनिद्रा विष्णु से निवृत्त होती हैं और मधु-कैटभ का वध होता है।' WHERE id='durga-saptashati-pratham-adhyay';
 
-UPDATE chapters SET seo_title='दुर्गा सप्तशती द्वितीय अध्याय | संस्कृत पाठ', seo_description='श्री दुर्गा सप्तशती के द्वितीय अध्याय का संस्कृत पाठ पढ़ें। अध्याय के श्लोक और देवी माहात्म्य की कथा यहाँ क्रम से देखें।' WHERE id='durga-saptashati-dwitiya-adhyay';
+UPDATE chapters SET seo_title='दुर्गा सप्तशती द्वितीय अध्याय | महिषासुर सेना वध', seo_description='द्वितीय अध्याय में देवताओं और महिषासुर के बीच युद्ध का वर्णन है। देवताओं के तेज से प्रकट हुई देवी दुर्गा महिषासुर की सेना और प्रमुख सेनानायकों का संहार करती हैं।' WHERE id='durga-saptashati-dwitiya-adhyay';
 
-UPDATE chapters SET seo_title='दुर्गा सप्तशती तृतीय अध्याय | संस्कृत पाठ', seo_description='श्री दुर्गा सप्तशती के तृतीय अध्याय का संस्कृत पाठ पढ़ें। देवी माहात्म्य के इस अध्याय के श्लोक यहाँ क्रम से उपलब्ध हैं।' WHERE id='durga-saptashati-tritiya-adhyay';
+UPDATE chapters SET seo_title='दुर्गा सप्तशती तृतीय अध्याय | महिषासुर वध', seo_description='तृतीय अध्याय में देवी दुर्गा और महिषासुर के भीषण युद्ध का वर्णन है। अनेक रूप बदलकर युद्ध करने वाले महिषासुर का देवी अंततः वध करती हैं।' WHERE id='durga-saptashati-tritiya-adhyay';
 
-UPDATE chapters SET seo_title='दुर्गा सप्तशती चतुर्थ अध्याय | संस्कृत पाठ', seo_description='श्री दुर्गा सप्तशती के चतुर्थ अध्याय का संस्कृत पाठ पढ़ें। अध्याय के श्लोक और देवी स्तुति का पाठ यहाँ देखें।' WHERE id='durga-saptashati-chaturtha-adhyay';
+UPDATE chapters SET seo_title='दुर्गा सप्तशती चतुर्थ अध्याय | शक्रादि स्तुति', seo_description='चतुर्थ अध्याय में इन्द्र सहित देवता महिषासुर के वध के बाद देवी की स्तुति करते हैं। वे देवी की महिमा का वर्णन कर संकट के समय स्मरण करने पर सहायता की प्रार्थना करते हैं।' WHERE id='durga-saptashati-chaturtha-adhyay';
 
-UPDATE chapters SET seo_title='दुर्गा सप्तशती पंचम अध्याय | संस्कृत पाठ', seo_description='श्री दुर्गा सप्तशती के पंचम अध्याय का संस्कृत पाठ पढ़ें। देवी माहात्म्य के इस अध्याय के श्लोक यहाँ क्रम से उपलब्ध हैं।' WHERE id='durga-saptashati-pancham-adhyay';
+UPDATE chapters SET seo_title='दुर्गा सप्तशती पंचम अध्याय | या देवी स्तुति', seo_description='पंचम अध्याय में देवताओं की प्रसिद्ध “या देवी सर्वभूतेषु” स्तुति आती है। देवी कौशिकी और शुम्भ के दूत के संवाद में देवी अपनी शर्त बताती हैं कि युद्ध में विजयी होने वाला ही उनसे विवाह कर सकता है।' WHERE id='durga-saptashati-pancham-adhyay';
 
-UPDATE chapters SET seo_title='दुर्गा सप्तशती षष्ठ अध्याय | संस्कृत पाठ', seo_description='श्री दुर्गा सप्तशती के षष्ठ अध्याय का संस्कृत पाठ पढ़ें। अध्याय के श्लोक और देवी माहात्म्य का पाठ यहाँ देखें।' WHERE id='durga-saptashati-shashtho-adhyay';
+UPDATE chapters SET seo_title='दुर्गा सप्तशती षष्ठ अध्याय | धूम्रलोचन वध', seo_description='षष्ठ अध्याय में शुम्भ द्वारा भेजे गए असुर सेनापति धूम्रलोचन का प्रसंग है। देवी की हुंकार से धूम्रलोचन भस्म होता है और देवी का सिंह उसकी सेना का संहार करता है।' WHERE id='durga-saptashati-shashtho-adhyay';
 
-UPDATE chapters SET seo_title='दुर्गा सप्तशती सप्तम अध्याय | संस्कृत पाठ', seo_description='श्री दुर्गा सप्तशती के सप्तम अध्याय का संस्कृत पाठ पढ़ें। देवी माहात्म्य के इस अध्याय के श्लोक यहाँ क्रम से उपलब्ध हैं।' WHERE id='durga-saptashati-saptam-adhyay';
+UPDATE chapters SET seo_title='दुर्गा सप्तशती सप्तम अध्याय | चण्ड-मुण्ड वध', seo_description='सप्तम अध्याय में चण्ड और मुण्ड के साथ देवी का युद्ध वर्णित है। देवी के ललाट से प्रकट हुई काली दोनों असुरों का वध करती हैं, जिसके बाद उन्हें चामुण्डा नाम मिलता है।' WHERE id='durga-saptashati-saptam-adhyay';
 
-UPDATE chapters SET seo_title='दुर्गा सप्तशती अष्टम अध्याय | संस्कृत पाठ', seo_description='श्री दुर्गा सप्तशती के अष्टम अध्याय का संस्कृत पाठ पढ़ें। अध्याय के श्लोक और देवी माहात्म्य की कथा यहाँ देखें।' WHERE id='durga-saptashati-ashtam-adhyay';
+UPDATE chapters SET seo_title='दुर्गा सप्तशती अष्टम अध्याय | रक्तबीज वध', seo_description='अष्टम अध्याय में रक्तबीज के साथ भीषण युद्ध का वर्णन है। उसके रक्त की हर बूंद से नए असुर उत्पन्न होते हैं; देवी चामुण्डा रक्त को भूमि पर गिरने से रोककर उसका संहार करती हैं।' WHERE id='durga-saptashati-ashtam-adhyay';
 
-UPDATE chapters SET seo_title='दुर्गा सप्तशती नवम अध्याय | संस्कृत पाठ', seo_description='श्री दुर्गा सप्तशती के नवम अध्याय का संस्कृत पाठ पढ़ें। देवी माहात्म्य के इस अध्याय के श्लोक यहाँ क्रम से उपलब्ध हैं।' WHERE id='durga-saptashati-navam-adhyay';
+UPDATE chapters SET seo_title='दुर्गा सप्तशती नवम अध्याय | निशुम्भ वध', seo_description='नवम अध्याय में निशुम्भ और देवी के बीच युद्ध का वर्णन है। अनेक अस्त्रों से युद्ध करने के बाद देवी निशुम्भ का वध करती हैं और देवियों की सेना असुरों से युद्ध करती है।' WHERE id='durga-saptashati-navam-adhyay';
 
-UPDATE chapters SET seo_title='दुर्गा सप्तशती दशम अध्याय | संस्कृत पाठ', seo_description='श्री दुर्गा सप्तशती के दशम अध्याय का संस्कृत पाठ पढ़ें। अध्याय के श्लोक और देवी माहात्म्य का पाठ यहाँ देखें।' WHERE id='durga-saptashati-dasham-adhyay';
+UPDATE chapters SET seo_title='दुर्गा सप्तशती दशम अध्याय | शुम्भ वध', seo_description='दशम अध्याय में शुम्भ और देवी का अंतिम युद्ध वर्णित है। देवी बताती हैं कि वे अकेली ही अनेक रूपों में प्रकट हुई थीं; फिर देवी शुम्भ का वध करती हैं।' WHERE id='durga-saptashati-dasham-adhyay';
 
-UPDATE chapters SET seo_title='दुर्गा सप्तशती एकादश अध्याय | संस्कृत पाठ', seo_description='श्री दुर्गा सप्तशती के एकादश अध्याय का संस्कृत पाठ पढ़ें। देवी स्तुति सहित इस अध्याय के श्लोक यहाँ क्रम से देखें।' WHERE id='durga-saptashati-ekadash-adhyay';
+UPDATE chapters SET seo_title='दुर्गा सप्तशती एकादश अध्याय | नारायणी स्तुति', seo_description='एकादश अध्याय में देवता देवी की नारायणी स्तुति करते हैं और “नारायणी नमोऽस्तु ते” कहकर उनकी महिमा का गान करते हैं। देवी भविष्य में विभिन्न रूपों में प्रकट होने का भी वर्णन करती हैं।' WHERE id='durga-saptashati-ekadash-adhyay';
 
-UPDATE chapters SET seo_title='दुर्गा सप्तशती द्वादश अध्याय | संस्कृत पाठ', seo_description='श्री दुर्गा सप्तशती के द्वादश अध्याय का संस्कृत पाठ पढ़ें। अध्याय के श्लोक और देवी माहात्म्य की सामग्री यहाँ उपलब्ध है।' WHERE id='durga-saptashati-dwadash-adhyay';
+UPDATE chapters SET seo_title='दुर्गा सप्तशती द्वादश अध्याय | फलश्रुति', seo_description='द्वादश अध्याय में देवी सप्तशती के पाठ और श्रवण के फल बताती हैं। देवी माहात्म्य के अनुसार देवी की आराधना, पाठ और स्मरण से जुड़े फल तथा उपयुक्त अवसरों का वर्णन यहाँ पढ़ें।' WHERE id='durga-saptashati-dwadash-adhyay';
 
-UPDATE chapters SET seo_title='दुर्गा सप्तशती त्रयोदश अध्याय | संस्कृत पाठ', seo_description='श्री दुर्गा सप्तशती के त्रयोदश अध्याय का संस्कृत पाठ पढ़ें। अंतिम अध्याय के श्लोक यहाँ क्रम से उपलब्ध हैं।' WHERE id='durga-saptashati-trayodash-adhyay';
+UPDATE chapters SET seo_title='दुर्गा सप्तशती त्रयोदश अध्याय | सुरथ और वैश्य को वरदान', seo_description='त्रयोदश अध्याय में राजा सुरथ और वैश्य समाधि देवी की आराधना करते हैं। देवी राजा सुरथ को राज्य-प्राप्ति और भविष्य में सावर्णि मनु होने का वर देती हैं तथा समाधि को ज्ञान प्रदान करती हैं।' WHERE id='durga-saptashati-trayodash-adhyay';
 
 UPDATE chapters SET seo_title='दुर्गा सप्तशती उपसंहारः | संस्कृत पाठ', seo_description='श्री दुर्गा सप्तशती के उपसंहारः का संस्कृत पाठ पढ़ें। दुर्गा सप्तशती के समापन से संबंधित पाठ यहाँ देखें।' WHERE id='durga-saptashati-upasamhara';
 
