@@ -174,11 +174,11 @@
    font-size:clamp(11px,3.1vw,14px);line-height:1.25;
    white-space:normal;overflow-wrap:anywhere
  }
- .reader-tools #speak{grid-column:span 2}
- .reader-tools #stop{grid-column:span 2}
- .reader-tools #copy,.reader-tools #share{grid-column:span 2}
- .reader-tools #bookmark{grid-column:span 4}
- .reader-tools .speak-status{grid-column:1/-1;min-height:0;width:100%;padding:0;text-align:center}
+ .reader-tools #speak{grid-column:span 2;order:1}
+ .reader-tools #stop{grid-column:span 2;order:2}
+ .reader-tools #minus{order:3}\n .reader-tools #plus{order:4}\n .reader-tools #copy{grid-column:span 2;order:5}\n .reader-tools #share{grid-column:span 2;order:6}
+ .reader-tools #bookmark{grid-column:span 4;order:7}
+ .reader-tools .speak-status{grid-column:1/-1;order:8;min-height:0;width:100%;padding:0;text-align:center}
  .navrow{gap:8px;margin:0 0 18px}
  .navrow a{
    min-height:68px;height:100%;padding:10px 5px;
