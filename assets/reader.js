@@ -7,24 +7,28 @@
  const href=(s,u)=>{const a=q(s);if(!a)return;if(u){a.href=u;a.removeAttribute("aria-disabled")}else{a.removeAttribute("href");a.setAttribute("aria-disabled","true")}};
  function size(){if(content)content.style.fontSize=fs+"px"}
  function applyMarkerColors(root){
-   // अनुष्टुप् के चार पादों का निश्चित रंग-क्रम: गहरा लाल, गहरा हरा,
-   // गहरा हरा, गहरा लाल। पाँच रंगों वाला पुराना चक्र हटाया गया है।
-   const nodes=[];const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT);let n;
-   while(n=w.nextNode())if(n.nodeValue&&n.nodeValue.includes("~"))nodes.push(n);
-   const padaColors=[1,2,2,1];let markerIndex=0;
-   nodes.forEach(node=>{
-     const parts=node.nodeValue.split("~");if(parts.length<2)return;
-     const frag=document.createDocumentFragment();
-     parts.forEach((part,i)=>{
-       if(part){
-         const colorIndex=padaColors[markerIndex%padaColors.length];
-         const sp=document.createElement("span");
-         sp.className="marker-part marker-color-"+colorIndex;
-         sp.textContent=part;frag.appendChild(sp);
-       }
-       if(i<parts.length-1)markerIndex++;
+   // हर संस्कृत श्लोक में रंग-क्रम नए सिरे से शुरू हो: लाल, हरा, हरा, लाल।
+   // पूरे अध्याय में एक साझा काउंटर रखने से अगले श्लोकों के रंग खिसक जाते थे।
+   const padaColors=[1,2,2,1];
+   const blocks=[...root.querySelectorAll(".sanskrit-text")];
+   const targets=blocks.length?blocks:[root];
+   targets.forEach(block=>{
+     const nodes=[];const w=document.createTreeWalker(block,NodeFilter.SHOW_TEXT);let n;
+     while(n=w.nextNode())if(n.nodeValue&&n.nodeValue.includes("~"))nodes.push(n);
+     let markerIndex=0;
+     nodes.forEach(node=>{
+       const parts=node.nodeValue.split("~");if(parts.length<2)return;
+       const frag=document.createDocumentFragment();
+       parts.forEach((part,i)=>{
+         if(part){
+           const sp=document.createElement("span");
+           sp.className="marker-part marker-color-"+padaColors[markerIndex%padaColors.length];
+           sp.textContent=part;frag.appendChild(sp);
+         }
+         if(i<parts.length-1)markerIndex++;
+       });
+       node.parentNode.replaceChild(frag,node);
      });
-     node.parentNode.replaceChild(frag,node);
    });
  }
  function anushtubh(root){root.querySelectorAll('.sanskrit-text[data-chhand="anushtubh"]').forEach(el=>{const p=[...el.querySelectorAll("[data-pada]")];if(p.length===4)p.forEach((x,i)=>x.classList.add(i===0||i===3?"tone-a":"tone-b"))})}
